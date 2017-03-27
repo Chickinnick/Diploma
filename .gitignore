@@ -14,3 +14,7 @@
 local.properties
 *.apk
 **/captures
+*.jar
+*.properties
+*.bat
+gradlew
