@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion COMPILE_SDK_VERSION
+  buildToolsVersion BUILD_TOOLS_VERSION
+
+  defaultConfig {
+    minSdkVersion MIN_SDK_VERSION
+    targetSdkVersion TARGET_SDK_VERSION
+    versionName VERSION_NAME
+    versionCode VERSION_CODE.toInteger()
+  }
+  buildToolsVersion '25.0.0'
+}
+
+dependencies {
+  compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
+
+  compile "io.reactivex:rxjava:$RXJAVA_VERSION"
+  compile "io.reactivex:rxandroid:$RXANDROID_VERSION"
+}
+
+
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
