@@ -6,36 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.umbaba.bluetoothvswifidirect.MainActivity">
 
-    <ListView
-        android:id="@+id/result"
+    <FrameLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_alignBottom="@+id/result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:padding="@dimen/buttons_padding">
-
-        <Button
-            android:id="@+id/start"
-            android:layout_gravity="bottom|left"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorInactive"
-            android:textColor="@android:color/white"
-            android:text="@string/start_dis" />
-
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:text="@string/stop_dis" />
-    </LinearLayout>
 </RelativeLayout>

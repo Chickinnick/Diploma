@@ -19,6 +19,3 @@ dependencies {
   compile "io.reactivex:rxjava:$RXJAVA_VERSION"
   compile "io.reactivex:rxandroid:$RXANDROID_VERSION"
 }
-
-
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
