@@ -10,11 +10,16 @@ import android.view.ViewGroup;
 
 import com.umbaba.bluetoothvswifidirect.R;
 
-public class ComparationFragment extends Fragment {
+public class ComparationFragment extends Fragment implements ComparationContract.View{
 
 
     public ComparationFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void setPresenter(Object presenter) {
+
     }
 
     public static ComparationFragment newInstance() {
@@ -37,5 +42,4 @@ public class ComparationFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comparation, container, false);
     }
-
 }
