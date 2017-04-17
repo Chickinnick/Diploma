@@ -9,7 +9,7 @@ import com.umbaba.bluetoothvswifidirect.BaseView;
 
 public interface ComparationContract {
 
-    interface View extends BaseView {
+    interface View extends BaseView<Presenter> {
 
 
     }
