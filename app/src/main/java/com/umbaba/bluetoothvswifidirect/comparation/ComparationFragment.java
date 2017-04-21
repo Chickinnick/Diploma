@@ -1,7 +1,5 @@
 package com.umbaba.bluetoothvswifidirect.comparation;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -12,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.umbaba.bluetoothvswifidirect.R;
+import com.umbaba.bluetoothvswifidirect.data.comparation.Criteria;
+
+import java.util.List;
 
 public class ComparationFragment extends Fragment implements ComparationContract.View{
 
@@ -46,6 +47,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
+        recyclerView.setAdapter(new RVAdapter(presenter.getCriterion()));
         return view;
     }
 
@@ -53,14 +55,25 @@ public class ComparationFragment extends Fragment implements ComparationContract
     public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ComparationViewHolder>{
 
 
+        List<Criteria> criterias;
+
+        public RVAdapter(List<Criteria> criterias) {
+            this.criterias = criterias;
+        }
 
         @Override
         public ComparationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_comparation, parent, false);
+            return  new ComparationViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ComparationViewHolder holder, int position) {
+            Criteria criteria = criterias.get(position);
+            holder.title.setText(criteria.getTitle());
+            holder.left.setText(criteria.getLeft());
+            holder.right.setText(criteria.getRight());
 
         }
 
@@ -71,13 +84,16 @@ public class ComparationFragment extends Fragment implements ComparationContract
 
         public class ComparationViewHolder extends RecyclerView.ViewHolder {
             CardView cv;
-            TextView criterio;
+            TextView title;
             TextView left;
             TextView right;
 
             ComparationViewHolder(View itemView) {
                 super(itemView);
-               // cv = (CardView) itemView.findViewById(R.id.cv);
+                cv = (CardView) itemView.findViewById(R.id.card_view);
+                title = (TextView) itemView.findViewById(R.id.title);
+                left = (TextView) itemView.findViewById(R.id.left);
+                right = (TextView) itemView.findViewById(R.id.right);
             }
         }
 

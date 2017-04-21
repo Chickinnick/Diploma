@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentActivity;
 
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
+import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
+import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
+import com.umbaba.bluetoothvswifidirect.data.comparation.FakeComparationRepository;
 import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
 
 public class MainActivity extends FragmentActivity {
@@ -24,8 +27,8 @@ public class MainActivity extends FragmentActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     comparationFragment, R.id.contentFrame);
         }
-
-        comparationPresenter = new ComparationPresenter(comparationFragment);
+        ComparationModel comparationModel = new FakeComparationRepository();
+        comparationPresenter = new ComparationPresenter(comparationFragment, comparationModel);
         comparationFragment.setPresenter(comparationPresenter);
     }
 
