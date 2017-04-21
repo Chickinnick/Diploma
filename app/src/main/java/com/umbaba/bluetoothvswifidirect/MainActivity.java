@@ -29,7 +29,6 @@ public class MainActivity extends FragmentActivity {
         }
         ComparationModel comparationModel = new FakeComparationRepository();
         comparationPresenter = new ComparationPresenter(comparationFragment, comparationModel);
-        comparationFragment.setPresenter(comparationPresenter);
     }
 
 

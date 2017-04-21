@@ -2,7 +2,9 @@ package com.umbaba.bluetoothvswifidirect.comparation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.CollapsibleActionView;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +14,16 @@ import android.widget.TextView;
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.data.comparation.Criteria;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.EMPTY_LIST;
 
 public class ComparationFragment extends Fragment implements ComparationContract.View{
 
     ComparationContract.Presenter presenter;
+    private RVAdapter adapter;
 
     public ComparationFragment() {
         // Required empty public constructor
@@ -47,8 +54,23 @@ public class ComparationFragment extends Fragment implements ComparationContract
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
-        recyclerView.setAdapter(new RVAdapter(presenter.getCriterion()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new RVAdapter(EMPTY_LIST);
+        recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
+
+    }
+
+    @Override
+    public void showCriterion(List<Criteria> criterions) {
+        adapter.setData(criterions);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -79,7 +101,11 @@ public class ComparationFragment extends Fragment implements ComparationContract
 
         @Override
         public int getItemCount() {
-            return 0;
+            return criterias.size();
+        }
+
+        public void setData(List<Criteria> data) {
+            this.criterias = data;
         }
 
         public class ComparationViewHolder extends RecyclerView.ViewHolder {

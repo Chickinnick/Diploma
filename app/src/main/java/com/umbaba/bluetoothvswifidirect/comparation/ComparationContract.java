@@ -13,12 +13,12 @@ import java.util.List;
 public interface ComparationContract {
 
     interface View extends BaseView<Presenter> {
-
+        void showCriterion(List<Criteria> criterions);
 
     }
 
     interface Presenter extends BasePresenter {
 
-        List<Criteria> getCriterion();
+        void loadCriterion();
     }
 }
