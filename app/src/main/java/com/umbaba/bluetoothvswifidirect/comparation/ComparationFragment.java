@@ -22,6 +22,7 @@ import static java.util.Collections.EMPTY_LIST;
 
 public class ComparationFragment extends Fragment implements ComparationContract.View{
 
+    public static final int ID = 123;
     ComparationContract.Presenter presenter;
     private RVAdapter adapter;
 

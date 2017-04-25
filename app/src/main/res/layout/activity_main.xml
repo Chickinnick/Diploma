@@ -21,12 +21,14 @@
         android:weightSum="2">
 
         <Button
+            android:id="@+id/test_bluetooth_btn"
             android:text="Test Bluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
+            android:id="@+id/test_wifi_btn"
             android:text="Test Wifi Direct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

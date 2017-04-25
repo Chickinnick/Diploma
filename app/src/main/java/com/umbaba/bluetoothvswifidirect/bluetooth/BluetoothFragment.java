@@ -24,6 +24,7 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 public class BluetoothFragment extends Fragment implements BluetoothContract.View{
 
+    public static final int ID = 12;
 
     private Button start;
     private Button stop;
@@ -34,6 +35,15 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     public BluetoothFragment() {
 
     }
+
+    public static BluetoothFragment newInstance() {
+        BluetoothFragment fragment = new BluetoothFragment();
+        Bundle args = new Bundle();
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
