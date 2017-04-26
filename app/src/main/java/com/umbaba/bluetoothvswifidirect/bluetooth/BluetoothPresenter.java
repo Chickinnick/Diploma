@@ -5,13 +5,17 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.github.ivbaranov.rxbluetooth.Action;
 import com.github.ivbaranov.rxbluetooth.BluetoothConnection;
+import com.github.ivbaranov.rxbluetooth.BondStateEvent;
 import com.github.ivbaranov.rxbluetooth.RxBluetooth;
 import com.umbaba.bluetoothvswifidirect.R;
+import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private final BluetoothContract.View view;
 
     private static final String TAG = "BluetoothPresenter";
+    private final TestFileModel fileModel;
     private RxBluetooth rxBluetooth;
     private Subscription deviceSubscription;
     private Subscription discoveryStartSubscription;
@@ -43,7 +48,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private List<BluetoothDevice> devices = new ArrayList<>();
 
 
-    public BluetoothPresenter(Activity activity, BluetoothContract.View view) {
+    public BluetoothPresenter(Activity activity, BluetoothContract.View view , TestFileModel testFileModel) {
 
         rxBluetooth = new RxBluetooth(activity);
         if (!rxBluetooth.isBluetoothEnabled()) {
@@ -52,7 +57,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
 
-
+        this.fileModel = testFileModel;
     }
 
     @Override
@@ -145,23 +150,34 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     public void itemSelected(int position) {
         BluetoothDevice bluetoothDevice = devices.get(position);
         UUID uuid = UUID.randomUUID();
-        rxBluetooth.observeConnectDevice(bluetoothDevice, uuid)
+        rxBluetooth.observeBondState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<BluetoothSocket>() {
-                    @Override public void call(BluetoothSocket socket) {
-                        try {
-                            BluetoothConnection bluetoothConnection = new BluetoothConnection(socket);
-                            bluetoothConnection.send((byte) 12);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                .subscribe(new Action1<BondStateEvent>() {
+                    @Override
+                    public void call(BondStateEvent bondStateEvent) {
+                        String address = bondStateEvent.getBluetoothDevice().getAddress();
+                        shareFile();
                     }
                 }, new Action1<Throwable>() {
-                    @Override public void call(Throwable throwable) {
-                        // Error occured
+                    @Override
+                    public void call(Throwable throwable) {
+
                     }
                 });
+    }
+
+    private void shareFile() {
+
+//        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//        sharingIntent.setType("*/*");
+//        sharingIntent.setPackage("com.android.bluetooth");
+//        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+//        starttime = System.currentTimeMillis();
+//        fileSize = Long.valueOf(file.length());
+//        startActivityForResult(
+//                Intent.createChooser(sharingIntent, "Share file"),
+//                FILE_SEND);
     }
 
     @Override

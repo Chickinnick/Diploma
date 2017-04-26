@@ -11,6 +11,8 @@ import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.data.comparation.FakeComparationRepository;
+import com.umbaba.bluetoothvswifidirect.testdata.DefaultFileData;
+import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
 
 public class MainActivity extends FragmentActivity {
@@ -54,7 +56,8 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
-        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment);
+        TestFileModel testFileModel = new DefaultFileData();
+        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment ,testFileModel);
 
     }
 
