@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity {
 
     private ComparationPresenter comparationPresenter;
     private BluetoothPresenter bluetoothPresenter;
+    private TestFileModel testFileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         setupComparation();
         initMainFlow();
+        testFileModel = new DefaultFileData();
     }
 
     private void initMainFlow() {
@@ -56,7 +58,6 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
-        TestFileModel testFileModel = new DefaultFileData();
         bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment ,testFileModel);
 
     }

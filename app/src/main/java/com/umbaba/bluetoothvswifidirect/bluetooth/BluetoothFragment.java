@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
+import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
 
     private BluetoothContract.Presenter mPresenter;
     private RVAdapter adapter;
+    private LinearLayout sendGroup;
 
     public BluetoothFragment() {
 
@@ -76,6 +79,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         View inflate = inflater.inflate(R.layout.fragment_bluetooth, container, false);
         start = (Button) inflate.findViewById(R.id.start);
         stop = (Button) inflate.findViewById(R.id.stop);
+        sendGroup = (LinearLayout) inflate.findViewById(R.id.send_group);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.result);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return inflate;
@@ -132,6 +136,30 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     @Override
     public void stateOff() {
         start.setBackgroundColor(getResources().getColor(R.color.colorInactive));
+    }
+
+    @Override
+    public void enableSend() {
+        sendGroup.setVisibility(View.VISIBLE);
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.btn5mb:
+                        mPresenter.sendFile(TestFileModel.FILE_5);
+                        break;
+                    case R.id.btn10mb:
+                        mPresenter.sendFile(TestFileModel.FILE_10);
+                        break;
+                    case R.id.btn20mb:
+                        mPresenter.sendFile(TestFileModel.FILE_20);
+                        break;
+                }
+            }
+        };
+        sendGroup.findViewById(R.id.btn5mb).setOnClickListener(onClickListener);
+        sendGroup.findViewById(R.id.btn10mb).setOnClickListener(onClickListener);
+        sendGroup.findViewById(R.id.btn20mb).setOnClickListener(onClickListener);
     }
 
     @Override

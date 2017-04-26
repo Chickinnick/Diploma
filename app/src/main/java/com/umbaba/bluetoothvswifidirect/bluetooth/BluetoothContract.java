@@ -24,6 +24,8 @@ public interface BluetoothContract {
         void stateOn();
 
         void stateOff();
+
+        void enableSend();
     }
 
     interface Presenter extends BasePresenter{
@@ -35,5 +37,7 @@ public interface BluetoothContract {
         void stop();
 
         void itemSelected(int position);
+
+        void sendFile(int size);
     }
 }

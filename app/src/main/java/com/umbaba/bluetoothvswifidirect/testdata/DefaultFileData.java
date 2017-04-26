@@ -1,12 +1,27 @@
 package com.umbaba.bluetoothvswifidirect.testdata;
 
-
-import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 
 public class DefaultFileData implements TestFileModel {
 
+    private static final String TAG = "DefaultFileData";
+
+
+    @Override
+    public File getFile(int size){
+        switch (size){
+            case FILE_5:
+                return get5MBFile();
+            case FILE_10:
+                return get10MBFile();
+            case FILE_20:
+                return get20MBFile();
+        }
+        Log.e(TAG, "getFile: failed" );
+        return null;
+    }
 
     @Override
     public File get5MBFile() {

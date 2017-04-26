@@ -17,6 +17,7 @@ import com.github.ivbaranov.rxbluetooth.RxBluetooth;
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -156,8 +157,8 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 .subscribe(new Action1<BondStateEvent>() {
                     @Override
                     public void call(BondStateEvent bondStateEvent) {
-                        String address = bondStateEvent.getBluetoothDevice().getAddress();
-                        shareFile();
+                        view.enableSend();
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -167,12 +168,14 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 });
     }
 
-    private void shareFile() {
 
-//        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-//        sharingIntent.setType("*/*");
-//        sharingIntent.setPackage("com.android.bluetooth");
-//        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+    @Override
+    public void sendFile(int size) {
+        File file = fileModel.getFile(size);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("*/*");
+        sharingIntent.setPackage("com.android.bluetooth");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 //        starttime = System.currentTimeMillis();
 //        fileSize = Long.valueOf(file.length());
 //        startActivityForResult(
