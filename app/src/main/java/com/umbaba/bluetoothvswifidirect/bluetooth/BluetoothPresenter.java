@@ -3,16 +3,19 @@ package com.umbaba.bluetoothvswifidirect.bluetooth;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.github.ivbaranov.rxbluetooth.Action;
+import com.github.ivbaranov.rxbluetooth.BluetoothConnection;
 import com.github.ivbaranov.rxbluetooth.RxBluetooth;
 import com.umbaba.bluetoothvswifidirect.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -141,6 +144,24 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     @Override
     public void itemSelected(int position) {
         BluetoothDevice bluetoothDevice = devices.get(position);
+        UUID uuid = UUID.randomUUID();
+        rxBluetooth.observeConnectDevice(bluetoothDevice, uuid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<BluetoothSocket>() {
+                    @Override public void call(BluetoothSocket socket) {
+                        try {
+                            BluetoothConnection bluetoothConnection = new BluetoothConnection(socket);
+                            bluetoothConnection.send((byte) 12);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override public void call(Throwable throwable) {
+                        // Error occured
+                    }
+                });
     }
 
     @Override
