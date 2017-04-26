@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
@@ -90,9 +91,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
             @Override
             public void onClick(View v) {
                 mPresenter.start();
-
-                adapter = new BluetoothFragment.RVAdapter(mPresenter.getDevices());
-                recyclerView.setAdapter(adapter);
+                initAdaper();
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +100,17 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
                 mPresenter.stop();
             }
         });
+    }
+
+    private void initAdaper() {
+        adapter = new RVAdapter();
+        adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position, View view) {
+                mPresenter.itemSelected(position);
+            }
+        });
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -132,17 +142,18 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
             deviceName += " " + device.getName();
         }
         Log.i(TAG, "addDevice: " + deviceName);
-         adapter.add(deviceName);
+        adapter.add(deviceName);
     }
 
 
-    public class RVAdapter extends RecyclerView.Adapter<BluetoothFragment.RVAdapter.BluetoothViewHolder> {
+    public static class RVAdapter extends RecyclerView.Adapter<BluetoothFragment.RVAdapter.BluetoothViewHolder> {
+        private OnItemClickListener onItemClickListener;
 
 
         List<String> devices;
 
-        public RVAdapter(List<String> devices) {
-            this.devices = devices;
+        public RVAdapter() {
+            this.devices = new ArrayList<>();
         }
 
         @Override
@@ -156,6 +167,8 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         public void onBindViewHolder(BluetoothFragment.RVAdapter.BluetoothViewHolder holder, int position) {
             String device = devices.get(position);
             holder.device.setText(device);
+            holder.bindListener(position, onItemClickListener);
+
 
         }
 
@@ -181,9 +194,27 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
                 super(itemView);
                 device = (TextView) itemView.findViewById(R.id.device);
             }
+
+
+            public void bindListener(final int position, final OnItemClickListener onItemClickListener) {
+                device.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemClicked(position, v);
+                        }
+                    }
+                });
+            }
         }
 
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
+        }
 
+        public interface OnItemClickListener {
+            void onItemClicked(int position, View view);
+        }
     }
 }
 

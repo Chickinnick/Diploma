@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.github.ivbaranov.rxbluetooth.Action;
 import com.github.ivbaranov.rxbluetooth.RxBluetooth;
@@ -28,13 +30,14 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private static final int REQUEST_ENABLE_BT = 1;
     private final BluetoothContract.View view;
 
+    private static final String TAG = "BluetoothPresenter";
     private RxBluetooth rxBluetooth;
     private Subscription deviceSubscription;
     private Subscription discoveryStartSubscription;
     private Subscription discoveryFinishSubscription;
     private Subscription bluetoothStateOnSubscription;
     private Subscription bluetoothStateOtherSubscription;
-    private List<String> devices = new ArrayList<>();
+    private List<BluetoothDevice> devices = new ArrayList<>();
 
 
     public BluetoothPresenter(Activity activity, BluetoothContract.View view) {
@@ -56,7 +59,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 .subscribeOn(Schedulers.computation())
                 .subscribe(new Action1<BluetoothDevice>() {
                     @Override public void call(BluetoothDevice bluetoothDevice) {
-                        devices.add(bluetoothDevice.getName());
+                        devices.add(bluetoothDevice);
                         view.addDevice(bluetoothDevice);
                     }
                 });
@@ -136,7 +139,12 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     }
 
     @Override
-    public List<String> getDevices() {
+    public void itemSelected(int position) {
+        BluetoothDevice bluetoothDevice = devices.get(position);
+    }
+
+    @Override
+    public List<BluetoothDevice> getDevices() {
         return devices;
     }
 }

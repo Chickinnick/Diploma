@@ -30,8 +30,10 @@ public interface BluetoothContract {
 
         void start();
 
-        List<String> getDevices();
+        List<BluetoothDevice> getDevices();
 
         void stop();
+
+        void itemSelected(int position);
     }
 }
