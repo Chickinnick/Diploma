@@ -56,7 +56,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RVAdapter(EMPTY_LIST);
+        adapter = new RVAdapter(new ArrayList<Criteria>());
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -78,7 +78,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
     public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ComparationViewHolder>{
 
 
-        List<Criteria> criterias;
+        List<Criteria> criterias = new ArrayList<>();
 
         public RVAdapter(List<Criteria> criterias) {
             this.criterias = criterias;
@@ -102,7 +102,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
 
         @Override
         public int getItemCount() {
-            return criterias.size();
+            return criterias == null ? 0 : criterias.size();
         }
 
         public void setData(List<Criteria> data) {
