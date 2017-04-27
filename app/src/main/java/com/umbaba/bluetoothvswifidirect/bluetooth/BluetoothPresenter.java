@@ -3,18 +3,12 @@ package com.umbaba.bluetoothvswifidirect.bluetooth;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.github.ivbaranov.rxbluetooth.Action;
-import com.github.ivbaranov.rxbluetooth.BluetoothConnection;
 import com.github.ivbaranov.rxbluetooth.BondStateEvent;
 import com.github.ivbaranov.rxbluetooth.RxBluetooth;
-import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
@@ -37,12 +31,14 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     private static final int REQUEST_ENABLE_BT = 1;
+    public static final int BLE_FILE_SEND = 123;
     private final BluetoothContract.View view;
 
     private static final String TAG = "BluetoothPresenter";
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
     private RxBluetooth rxBluetooth;
+    private Activity activity;
     private Subscription deviceSubscription;
     private Subscription discoveryStartSubscription;
     private Subscription discoveryFinishSubscription;
@@ -53,6 +49,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
         rxBluetooth = new RxBluetooth(activity);
+        this.activity = activity;
         if (!rxBluetooth.isBluetoothEnabled()) {
             rxBluetooth.enableBluetooth(activity, REQUEST_ENABLE_BT);
         }
@@ -180,9 +177,9 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
 //        starttime = System.currentTimeMillis();
 //        fileSize = Long.valueOf(file.length());
-//        startActivityForResult(
-//                Intent.createChooser(sharingIntent, "Share file"),
-//                FILE_SEND);
+        activity.startActivityForResult(
+                Intent.createChooser(sharingIntent, "Share file"),
+                BLE_FILE_SEND);
     }
 
     @Override
