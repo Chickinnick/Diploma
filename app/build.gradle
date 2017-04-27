@@ -34,7 +34,6 @@ dependencies {
 
     compile 'com.github.orhanobut:hawk:1.21'
 
-    compile project(path: ':rxbluetooth')
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha3'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'

@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umbaba.bluetoothvswifidirect.R;
-import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
-import static java.util.Collections.EMPTY_LIST;
 
 
 public class BluetoothFragment extends Fragment implements BluetoothContract.View {
@@ -56,13 +54,11 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.subscribe();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mPresenter.unsubscribe();
     }
 
 
