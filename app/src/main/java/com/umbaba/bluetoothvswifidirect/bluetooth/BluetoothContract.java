@@ -6,6 +6,7 @@ import com.umbaba.bluetoothvswifidirect.BasePresenter;
 import com.umbaba.bluetoothvswifidirect.BaseView;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Nick on 17.04.2017.
@@ -26,6 +27,8 @@ public interface BluetoothContract {
         void stateOff();
 
         void enableSend();
+
+        void addDevices(Set<BluetoothDevice> bluetoothDevices);
     }
 
     interface Presenter extends BasePresenter{

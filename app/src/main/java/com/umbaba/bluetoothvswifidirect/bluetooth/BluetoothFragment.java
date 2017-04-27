@@ -23,6 +23,7 @@ import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 import static java.util.Collections.EMPTY_LIST;
@@ -122,6 +123,17 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         start.setText(R.string.button_searching);
     }
 
+    @Override
+    public void addDevices(Set<BluetoothDevice> bluetoothDevices) {
+        if (adapter == null) {
+            return;
+        }
+
+        adapter.clear();
+        for (BluetoothDevice bluetoothDevice : bluetoothDevices) {
+            adapter.add(bluetoothDevice.getName());
+        }
+    }
 
     @Override
     public void discoverFinished() {
@@ -196,8 +208,6 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
             String device = devices.get(position);
             holder.device.setText(device);
             holder.bindListener(position, onItemClickListener);
-
-
         }
 
         @Override
@@ -212,6 +222,10 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         public void add(String device) {
             this.devices.add(device);
             notifyDataSetChanged();
+        }
+
+        public void clear() {
+            devices.clear();
         }
 
         public class BluetoothViewHolder extends RecyclerView.ViewHolder {

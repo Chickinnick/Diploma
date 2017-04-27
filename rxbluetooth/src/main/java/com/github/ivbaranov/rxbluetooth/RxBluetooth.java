@@ -464,8 +464,7 @@ public class RxBluetooth {
    * @param uuid uuid for SDP record
    * @return observable with connected {@link BluetoothSocket} on successful connection
    */
-  public Observable<BluetoothSocket> observeConnectDevice(final BluetoothDevice bluetoothDevice,
-      final UUID uuid) {
+  public Observable<BluetoothSocket> observeConnectDevice(final BluetoothDevice bluetoothDevice, final UUID uuid) {
     return Observable.defer(new Func0<Observable<BluetoothSocket>>() {
       @Override public Observable<BluetoothSocket> call() {
         return Observable.create(new Observable.OnSubscribe<BluetoothSocket>() {
@@ -480,6 +479,14 @@ public class RxBluetooth {
             }
           }
         });
+      }
+    });
+  }
+
+  public Observable<Set<BluetoothDevice>> observeBondDevices() {
+    return Observable.defer(new Func0<Observable<Set<BluetoothDevice>>>() {
+      @Override public Observable<Set<BluetoothDevice>> call() {
+        return Observable.just(mBluetoothAdapter.getBondedDevices());
       }
     });
   }

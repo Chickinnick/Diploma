@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.github.ivbaranov.rxbluetooth.Action;
 import com.github.ivbaranov.rxbluetooth.BondStateEvent;
@@ -14,7 +15,9 @@ import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import rx.Subscription;
@@ -45,6 +48,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private Subscription bluetoothStateOnSubscription;
     private Subscription bluetoothStateOtherSubscription;
     private List<BluetoothDevice> devices = new ArrayList<>();
+    private Subscription bluetoothBondSubscription;
 
 
     public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
@@ -61,7 +65,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     @Override
     public void subscribe() {
-        deviceSubscription = rxBluetooth.observeDevices()
+      /*  deviceSubscription = rxBluetooth.observeDevices()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(new Action1<BluetoothDevice>() {
@@ -70,7 +74,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                         view.addDevice(bluetoothDevice);
                     }
                 });
-
+*/
         discoveryStartSubscription = rxBluetooth.observeDiscovery()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
@@ -138,6 +142,17 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     public void start() {
         devices.clear();
         rxBluetooth.startDiscovery();
+        bluetoothBondSubscription = rxBluetooth.observeBondDevices()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(new Action1<Set<BluetoothDevice>>() {
+                    @Override
+                    public void call(Set<BluetoothDevice> bluetoothDevices) {
+                        Log.i(TAG, "call: " + bluetoothDevices.toString());
+                        devices.addAll(bluetoothDevices);
+                        view.addDevices(bluetoothDevices);
+                    }
+                });
     }
 
     @Override
@@ -147,23 +162,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     @Override
     public void itemSelected(int position) {
-        BluetoothDevice bluetoothDevice = devices.get(position);
-        UUID uuid = UUID.randomUUID();
-        rxBluetooth.observeBondState()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<BondStateEvent>() {
-                    @Override
-                    public void call(BondStateEvent bondStateEvent) {
-                        view.enableSend();
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
-                    }
-                });
+        view.enableSend();
     }
 
 

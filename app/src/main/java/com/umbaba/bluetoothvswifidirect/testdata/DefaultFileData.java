@@ -25,18 +25,18 @@ public class DefaultFileData implements TestFileModel {
 
     @Override
     public File get5MBFile() {
-        return new File(String.valueOf("file:///android_asset/file5mb.zip.zip"));
+        return new File(String.valueOf("file:///android_asset/file5mb.zip"));
     }
 
     @Override
     public File get10MBFile() {
-        return new File(String.valueOf("file:///android_asset/file10mb.zip.zip"));
+        return new File(String.valueOf("file:///android_asset/file10mb.zip"));
 
     }
 
     @Override
     public File get20MBFile() {
-        return new File(String.valueOf("file:///android_asset/file20mb.zip.zip"));
+        return new File(String.valueOf("file:///android_asset/file20mb.zip"));
 
     }
 }
