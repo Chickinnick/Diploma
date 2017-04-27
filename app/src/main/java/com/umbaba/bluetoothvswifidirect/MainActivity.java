@@ -10,7 +10,7 @@ import com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
-import com.umbaba.bluetoothvswifidirect.data.comparation.FakeComparationRepository;
+import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
 import com.umbaba.bluetoothvswifidirect.testdata.DefaultFileData;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
@@ -23,6 +23,7 @@ public class MainActivity extends FragmentActivity {
     private ComparationPresenter comparationPresenter;
     private BluetoothPresenter bluetoothPresenter;
     private TestFileModel testFileModel;
+    private ComparationModel comparationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
-        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment ,testFileModel);
+        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment ,testFileModel, comparationModel);
 
     }
 
@@ -69,7 +70,7 @@ public class MainActivity extends FragmentActivity {
             comparationFragment = ComparationFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
         }
-        ComparationModel comparationModel = new FakeComparationRepository();
+        comparationModel = new ComparationRepository(getApplicationContext());
         comparationPresenter = new ComparationPresenter(comparationFragment, comparationModel);
     }
 

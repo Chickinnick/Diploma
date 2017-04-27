@@ -15,6 +15,7 @@ import com.github.ivbaranov.rxbluetooth.BluetoothConnection;
 import com.github.ivbaranov.rxbluetooth.BondStateEvent;
 import com.github.ivbaranov.rxbluetooth.RxBluetooth;
 import com.umbaba.bluetoothvswifidirect.R;
+import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.io.File;
@@ -40,6 +41,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     private static final String TAG = "BluetoothPresenter";
     private final TestFileModel fileModel;
+    private final ComparationModel comparationModel;
     private RxBluetooth rxBluetooth;
     private Subscription deviceSubscription;
     private Subscription discoveryStartSubscription;
@@ -49,16 +51,15 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private List<BluetoothDevice> devices = new ArrayList<>();
 
 
-    public BluetoothPresenter(Activity activity, BluetoothContract.View view , TestFileModel testFileModel) {
-
+    public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
         rxBluetooth = new RxBluetooth(activity);
         if (!rxBluetooth.isBluetoothEnabled()) {
             rxBluetooth.enableBluetooth(activity, REQUEST_ENABLE_BT);
         }
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
-
         this.fileModel = testFileModel;
+        this.comparationModel = comparationModel;
     }
 
     @Override
@@ -176,6 +177,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
         sharingIntent.setType("*/*");
         sharingIntent.setPackage("com.android.bluetooth");
         sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+
 //        starttime = System.currentTimeMillis();
 //        fileSize = Long.valueOf(file.length());
 //        startActivityForResult(
