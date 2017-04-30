@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WifiDirect</string>
+
+    <string name="dialog_sending_video">Sending recorded video...</string>
+    <string name="dialog_video_sent_success">Video sent to director.</string>
+    <string name="dialog_video_sent_abort">Sending video aborted.</string>
+    <string name="receiving">Receiving</string>
+</resources>
