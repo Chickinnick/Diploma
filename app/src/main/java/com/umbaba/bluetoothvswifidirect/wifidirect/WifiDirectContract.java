@@ -3,6 +3,7 @@ package com.umbaba.bluetoothvswifidirect.wifidirect;
 import android.bluetooth.BluetoothDevice;
 import android.net.wifi.p2p.WifiP2pDevice;
 
+import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 import com.umbaba.bluetoothvswifidirect.BaseView;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface WifiDirectContract {
     interface Presenter {
 
 
-        List<WifiP2pDevice> getDevices();
+        List<WiFiP2pService> getDevices();
 
         void stop();
 

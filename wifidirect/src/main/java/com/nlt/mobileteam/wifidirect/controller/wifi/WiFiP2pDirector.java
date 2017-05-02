@@ -589,7 +589,7 @@ public class WiFiP2pDirector {
             }
 
             if (update) {
-                EventBus.getDefault().post(new NotifyDeviceList());
+                EventBus.getDefault().post(new NotifyDeviceList(WiFiP2pDirector.get().getDevices()));
 
             }
         }

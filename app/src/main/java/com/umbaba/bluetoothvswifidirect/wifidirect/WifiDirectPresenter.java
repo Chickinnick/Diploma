@@ -1,18 +1,22 @@
 package com.umbaba.bluetoothvswifidirect.wifidirect;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.p2p.WifiP2pDevice;
 
 import com.nlt.mobileteam.wifidirect.WifiDirect;
+import com.nlt.mobileteam.wifidirect.listeners.AssistantActionListener;
+import com.nlt.mobileteam.wifidirect.listeners.DirectorActionListener;
 import com.nlt.mobileteam.wifidirect.model.InstanceCode;
+import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorConnect;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
+import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
+import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
@@ -31,7 +35,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
     private Activity activity;
-    private List<WifiP2pDevice> devices = new ArrayList<>();
+    private DeviceList devices;
     private WifiDirect wifiDirect;
 
     public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
@@ -70,15 +74,33 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     @Override
     public void startDirector() {
         wifiDirect = WifiDirect.init(activity , InstanceCode.DIRECTOR);
+        wifiDirect.setActionListener(new DirectorActionListener() {
+            @Override
+            public void handleDeviceList(NotifyDeviceList event) {
+                devices = event.getDeviceList();
+
+            }
+        });
     }
 
     @Override
     public void startAssistant() {
         wifiDirect = WifiDirect.init(activity , InstanceCode.ASSISTANT);
+        wifiDirect.setActionListener(new AssistantActionListener() {
+            @Override
+            public void directorConnected(DirectorConnect event) {
+
+            }
+
+            @Override
+            public void directorDisconnected(DirectorDisconnect event) {
+
+            }
+        });
     }
 
     @Override
-    public List<WifiP2pDevice> getDevices() {
-        return devices;
+    public List<WiFiP2pService> getDevices() {
+        return devices.getTrimList();
     }
 }
