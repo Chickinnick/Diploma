@@ -12,8 +12,7 @@ import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
-import com.nlt.mobileteam.cinacore.CinaCoreModule;
+import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.socket.AbstractGroupOwnerSocketHandler;
@@ -21,13 +20,16 @@ import com.nlt.mobileteam.wifidirect.controller.socket.DDPGroupSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.DirectorSocketHandlerType;
 import com.nlt.mobileteam.wifidirect.controller.socket.GroupOwnerSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.SocketHandler;
+import com.nlt.mobileteam.wifidirect.model.InstanceCode;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
 import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.nlt.mobileteam.wifidirect.utils.exception.SetupSocketHandlerException;
 import com.nlt.mobileteam.wifidirect.wifiP2pListeners.ChannelListener;
-import com.nlt.mobileteam.wifidirect.wifiP2pListeners.DnsSdRLDirector;
 import com.nlt.mobileteam.wifidirect.wifiP2pListeners.WiFiP2pReceiverDirector;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,7 +39,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_NOTIFY_DEVICE_LIST;
 
 
 /**
@@ -67,8 +68,9 @@ public class WiFiP2pDirector {
     private Lock lock = new ReentrantLock();
     private boolean isLocalServiceStarted;
 
+
+
     private WiFiP2pDirector() {
-        context = WifiDirectCore.getAppContext();
         manager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(context, context.getMainLooper(), channelListener);
         receiver = new WiFiP2pReceiverDirector(manager);
@@ -93,7 +95,6 @@ public class WiFiP2pDirector {
      * devices as WiFi - Direct service.<br>
      * Initializes instance of {@link WifiP2pDnsSdServiceRequest} that will be required to
      * start services descovery.<br>
-     * Registers new instance of {@link DnsSdRLDirector} that will receive all callbacks from
      * WiFi - Direct framework when any corresponding device will be found.
      * </p>
      * <p>If no instance of {@link WifiP2pDnsSdServiceInfo} would'nt be
@@ -113,18 +114,17 @@ public class WiFiP2pDirector {
 
         Map<String, String> record = new HashMap<String, String>();
         record.put(TXTRECORD_PROP_AVAILABLE, "visible");
-        localService = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE + "_" + CinaCoreModule.SESSION_KEY_VALUE, WifiDirectCore.SERVICE_REG_TYPE, record);
+        localService = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE + "_" + WifiDirect.SESSION_KEY_VALUE, WifiDirectCore.SERVICE_REG_TYPE, record);
 
         setupSocketHandler();
         //setupDnsResponseListener(new DnsSdRLDirector());
         clearManagerCallbacks();
         preClearServices();
 
-        devicesList = new DeviceList(WifiDirectCore.devicesCount);
+        devicesList = new DeviceList(WifiDirect.DEVICES_COUNT);
     }
 
     /**
-     * Sets up a {@link DnsSdRLDirector} to WiFi-Direct.
      *
      * @param dnsSdRLDirector If null - no callback about discovered device will be received.
      */
@@ -140,9 +140,9 @@ public class WiFiP2pDirector {
      */
     private void setupSocketHandler() {
         AbstractGroupOwnerSocketHandler serverSocketHandler;
-        if (WifiDirectCore.cameraSessionInstanceCode == WifiDirectCore.INSTANCE_CODE_DIRECTOR) {
+        if (WifiDirectCore.cameraSessionInstanceCode == InstanceCode.DIRECTOR) {
             serverSocketHandler = SocketHandler.getServer(DirectorSocketHandlerType.CINAMAKER_DIRECTOR);
-        } else if (WifiDirectCore.cameraSessionInstanceCode == WifiDirectCore.INSTANCE_CODE_DIRECTOR_DDP) {
+        } else if (WifiDirectCore.cameraSessionInstanceCode == InstanceCode.DIRECTOR_DDP) {
             serverSocketHandler = SocketHandler.getServer(DirectorSocketHandlerType.DDP_DIRECTOR);
         } else {
             throw new SetupSocketHandlerException("Wrong WifiDirectCore.cameraSessionInstanceCode");
@@ -489,14 +489,15 @@ public class WiFiP2pDirector {
 
     public boolean updateDeviceList(WiFiP2pService service) {
         boolean isNew = false;
-        if (devicesList.size() < WifiDirectCore.devicesCount) {
+        if (devicesList.size() < WifiDirect.DEVICES_COUNT) {
             if (!devicesList.contains(service)) {
                 if (VERBOSE) Log.w(TAG, "adding " + service.device.deviceName);
                 devicesList.add(service);
                 service.index = devicesList.indexOf(service) + 1;
                 Log.e(TAG, "updateDeviceList, inserted index + 1 = " + service.index);
                 isNew = true;
-                BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+                EventBus.getDefault().post(new NotifyDeviceList());
+
             }
         }
         return isNew;
@@ -534,7 +535,8 @@ public class WiFiP2pDirector {
         if (devicesList.contains(service)) {
 //            removeFromGroup(service.device);
             devicesList.remove(service);
-            BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+            EventBus.getDefault().post(new NotifyDeviceList());
+
             updateIndexes();
         }
     }
@@ -555,7 +557,8 @@ public class WiFiP2pDirector {
             if (service.device.deviceName.equals(deviceName)) {
                 result = true;
                 service.status = WiFiP2pService.SOCKET_CONNECTED;
-                BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+                EventBus.getDefault().post(new NotifyDeviceList());
+
                 break;
             }
         }
@@ -586,9 +589,15 @@ public class WiFiP2pDirector {
             }
 
             if (update) {
-                BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+                EventBus.getDefault().post(new NotifyDeviceList());
+
             }
         }
+    }
+
+
+    public static void setContext(Context context) {
+        WiFiP2pDirector.context = context;
     }
 
     public boolean isNoConnectedDevices() {

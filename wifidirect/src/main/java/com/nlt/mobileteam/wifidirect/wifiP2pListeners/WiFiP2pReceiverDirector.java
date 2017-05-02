@@ -105,13 +105,9 @@ public class WiFiP2pReceiverDirector extends BroadcastReceiver {
         Collection<WifiP2pDevice> clientList = group.getClientList();
         if (clientList != null) {
             WiFiP2pDirector.get().refreshClientList(clientList);
-
             if (VERBOSE) {
                 for (WifiP2pDevice device : clientList) {
                     if(VERBOSE) Log.w(TAG, device.deviceName + " status " + device.status);
-                    if (device.status == 4 && CommunicationController.get().isNoAssistantsConnected()) {
-                        WifiDirectCore.disableWifi();
-                    }
                 }
             }
         }

@@ -3,9 +3,7 @@ package com.nlt.mobileteam.wifidirect.controller;
 import android.media.MediaFormat;
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
-import com.nlt.mobileteam.cinacore.CinaCoreModule;
-import com.nlt.mobileteam.cinacore.utils.Utils;
+import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.chat.ChatManager;
 import com.nlt.mobileteam.wifidirect.controller.chat.ChatManagerAssistant;
@@ -15,14 +13,13 @@ import com.nlt.mobileteam.wifidirect.controller.socket.AbstractGroupOwnerSocketH
 import com.nlt.mobileteam.wifidirect.controller.socket.ClientSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.SocketHandler;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
+import com.nlt.mobileteam.wifidirect.utils.SocketUtil;
 import com.nlt.mobileteam.wifidirect.utils.exception.MessageControllerException;
 
 import org.json.JSONObject;
 
 import java.net.Socket;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_ASSISTANT_DISCONNECTING;
-import static com.nlt.mobileteam.cinacore.serializable.SerializableUtils.getBytesFromMediaFormat;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_MEDIA_FORMAT;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_PROJ_INFO;
 
@@ -47,11 +44,11 @@ public class CommunicationController {
         initChatManagerCommunicationList(socket);
         initMediaManagerCommunicationList(socket);
         initPingPongManagerCommunicationList(socket);
-        Utils.trySetupKeepAliveOptions(socket);
+        SocketUtil.trySetupKeepAliveOptions(socket);
     }
 
     private void initMediaManagerCommunicationList(final Socket socket) {
-        mediaManagers = new CommunicatorList<MediaManager>(WifiDirectCore.devicesCount) {
+        mediaManagers = new CommunicatorList<MediaManager>(WifiDirect.DEVICES_COUNT) {
             @Override
             protected MediaManager getEmptyCommunicator() {
                 return new MediaManager(socket, socket);
@@ -60,7 +57,7 @@ public class CommunicationController {
     }
 
     private void initChatManagerCommunicationList(final Socket socket) {
-        chatManagers = new CommunicatorList<ChatManager>(WifiDirectCore.devicesCount) {
+        chatManagers = new CommunicatorList<ChatManager>(WifiDirect.DEVICES_COUNT) {
             @Override
             protected ChatManager getEmptyCommunicator() {
                 return new ChatManager(socket) {
@@ -79,7 +76,7 @@ public class CommunicationController {
     }
 
     private void initPingPongManagerCommunicationList(final Socket socket) {
-        pingPongManagers = new CommunicatorList<ChatManager>(WifiDirectCore.devicesCount) {
+        pingPongManagers = new CommunicatorList<ChatManager>(WifiDirect.DEVICES_COUNT) {
             @Override
             protected ChatManager getEmptyCommunicator() {
                 return new ChatManager(socket) {
@@ -116,11 +113,7 @@ public class CommunicationController {
      * otherwise return true
      */
     public static boolean isNoAssistantsConnected() {
-        if (CinaCoreModule.USE_PINGER) {
             return (get().pingPongManagers == null || get().pingPongManagers.size() == 0);
-        } else {
-            return (get().chatManagers == null || get().chatManagers.size() == 0);
-        }
     }
 
     /**
@@ -135,29 +128,16 @@ public class CommunicationController {
         if (VERBOSE) Log.i(TAG, "pingPongManagers.size() = " + get().pingPongManagers.size() +
                 " chatManagers.size = " + get().chatManagers.size() +
                 " mediaManagers.size = " + get().mediaManagers.size());
-        if (CinaCoreModule.USE_PINGER) {
             return (get().pingPongManagers != null &&
                     get().pingPongManagers.size() == MAX_ASSISTANTS_COUNT);
-        } else {
-            return (get().chatManagers != null &&
-                    get().chatManagers.size() == MAX_ASSISTANTS_COUNT);
-        }
     }
 
     public static int getAssistantsCount() {
-        if (CinaCoreModule.USE_PINGER) {
             if (get().pingPongManagers == null) {
                 return -1;
             } else {
                 return get().pingPongManagers.size();
             }
-        } else {
-            if (get().chatManagers == null) {
-                return -1;
-            } else {
-                return get().chatManagers.size();
-            }
-        }
     }
 
     /**
@@ -422,7 +402,7 @@ public class CommunicationController {
             }
 
             if (sendDisconnectingMassage) {
-                BroadcastManager.get().sendInt(COMM_ASSISTANT_DISCONNECTING, index + 1);
+              //TODO  BroadcastManager.get().sendInt(COMM_ASSISTANT_DISCONNECTING, index + 1);
             }
         } else {
             throw new IllegalArgumentException("Wrong index to remove, index = " + index);
@@ -437,10 +417,4 @@ public class CommunicationController {
         }
     }
 
-    public void sendMediaFormat(MediaFormat format) {
-        assert format != null;
-
-        byte[] serializedFormat = getBytesFromMediaFormat(format);
-        sendMessageToAll(MESSAGE_MEDIA_FORMAT, serializedFormat.length, serializedFormat);
-    }
 }

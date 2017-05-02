@@ -4,7 +4,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.CinaCoreModule;
+import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pAssistant;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
@@ -37,7 +37,7 @@ public class DnsSdRLAssistant implements WifiP2pManager.DnsSdServiceResponseList
 
 
             WiFiP2pService toConnect = null;
-                if (instanceName.substring(1, 2).equalsIgnoreCase(DIRECTOR_PATTERN) && sessionKey.equals(CinaCoreModule.SESSION_KEY_VALUE)) {
+                if (instanceName.substring(1, 2).equalsIgnoreCase(DIRECTOR_PATTERN) && sessionKey.equals(WifiDirect.SESSION_KEY_VALUE)) {
                     toConnect = new WiFiP2pService();
                     toConnect.device = device;
                     toConnect.instanceName = instanceName;

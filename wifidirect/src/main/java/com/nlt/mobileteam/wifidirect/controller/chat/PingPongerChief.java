@@ -2,17 +2,18 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.Message;
 import com.nlt.mobileteam.wifidirect.controller.chat.callback.PingPongerCallBack;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.net.Socket;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_NOTIFY_DEVICE_LIST;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_DIRECTOR_DISCONNECTING;
 
 public class PingPongerChief extends ChatManager {
@@ -42,7 +43,8 @@ public class PingPongerChief extends ChatManager {
             WiFiP2pDirector.get().removeDevice(connectedDevice);
             if (!isClosing) {
                 closeSocketConnection();
-                BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+                EventBus.getDefault().post(new NotifyDeviceList());
+
             }
         }
 
@@ -93,7 +95,7 @@ public class PingPongerChief extends ChatManager {
     private void processMessageAssistantDisconnecting() {
         if (VERBOSE) Log.e(TAG, "processMessageAssistantDisconnecting()");
         WiFiP2pDirector.get().removeDevice(connectedDevice);
-        BroadcastManager.get().send(COMM_NOTIFY_DEVICE_LIST);
+        EventBus.getDefault().post(new NotifyDeviceList());
 
         if (VERBOSE)
             Log.i(TAG, "processMessageAssistantDisconnecting removeMediaManager for index = " +

@@ -19,8 +19,6 @@ import java.net.SocketException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.nlt.mobileteam.cinacore.CinaCoreModule.USE_PINGER;
-
 public class ClientSocketHandler extends SocketHandler {
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -77,7 +75,7 @@ public class ClientSocketHandler extends SocketHandler {
     protected void setupCommandSocket() {
         Log.w("SOCKET", "client socket launched");
         try {
-            if (USE_PINGER) {
+
                 InetSocketAddress pingPongAddress = new InetSocketAddress(getInetAddress().getHostAddress(), SERVER_PING_PONG_PORT);
                 Socket pingPongSocket = getConnectedSocket(pingPongAddress);
                 Log.v(TAG, "pingPong connected to " + pingPongAddress.toString());
@@ -85,7 +83,7 @@ public class ClientSocketHandler extends SocketHandler {
                 PingPongerAssistant pingPongChat = new PingPongerAssistant(pingPongSocket);
                 startChatManager(pingPongChat, "PingPongChat Thread");
                 CommunicationController.get().addPingPongChatManager(pingPongChat);
-            }
+
             InetSocketAddress address = new InetSocketAddress(getInetAddress().getHostAddress(), SERVER_COMMAND_PORT);
 
             Socket socket = getConnectedSocket(address);

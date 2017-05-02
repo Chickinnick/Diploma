@@ -14,8 +14,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
-import com.nlt.mobileteam.cinacore.CinaCoreModule;
+import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
@@ -28,7 +27,6 @@ import com.nlt.mobileteam.wifidirect.wifiP2pListeners.WiFiP2pReceiverAssistant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_SET_OWNER;
 
 public class WiFiP2pAssistant {
     private static final String TAG = "_WiFiP2pAssistant";
@@ -42,8 +40,6 @@ public class WiFiP2pAssistant {
 
     private WiFiP2pAssistant(WiFiP2pAssistantCallback callback) {
         this.callback = callback;
-        context = WifiDirectCore.getAppContext();
-
         manager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(context, context.getMainLooper(), channelListener);
         receiver = new WiFiP2pReceiverAssistant(manager, channel);
@@ -189,7 +185,7 @@ public class WiFiP2pAssistant {
     private void initService(WifiP2pDevice thisDevice) {
         Map<String, String> record = new HashMap<>();
         record.put(TXTRECORD_PROP_AVAILABLE, "visible");
-        localService = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE + "_" + CinaCoreModule.SESSION_KEY_VALUE + "._" + thisDevice.deviceName,
+        localService = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE + "_" + WifiDirect.SESSION_KEY_VALUE + "._" + thisDevice.deviceName,
                 WifiDirectCore.SERVICE_REG_TYPE, record);
         //serviceRequest = WifiP2pDnsSdServiceRequest.newInstance(WifiDirectCore.SERVICE_REG_TYPE);
         //setupDnsResponseListener(new DnsSdRLAssistant());
@@ -566,12 +562,16 @@ public class WiFiP2pAssistant {
 
     public void broadcastOwnerName() {
         if (context != null) {
-            BroadcastManager.get().sendString(COMM_SET_OWNER, ownerName);
+    //TODO        BroadcastManager.get().sendString(COMM_SET_OWNER, ownerName);
         }
     }
-
     public boolean isInGroup() {
         return inGroup;
+    }
+
+
+    public static void setContext(Context context) {
+        WiFiP2pAssistant.context = context;
     }
 
     public void setInGroup(boolean inGroup) {

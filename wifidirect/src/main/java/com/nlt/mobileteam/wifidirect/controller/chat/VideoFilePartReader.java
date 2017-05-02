@@ -1,12 +1,9 @@
 package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
-
-import com.nlt.mobileteam.cinacore.Action;
-import com.nlt.mobileteam.cinacore.BroadcastManager;
-import com.nlt.mobileteam.cinacore.exception.VideoFilePartReaderException;
 import com.nlt.mobileteam.wifidirect.R;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
+import com.nlt.mobileteam.wifidirect.utils.exception.VideoFilePartReaderException;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -17,7 +14,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_RESUME_GOPRO_STREAMING;
 import static com.nlt.mobileteam.wifidirect.controller.chat.ChatManager.MAX_BUFFER_SIZE;
 
 
@@ -116,40 +112,40 @@ public class VideoFilePartReader {
 
             if (totalProgress == videoFileLength) {
                 showSuccessDialog();
-                BroadcastManager.get().send(COMM_RESUME_GOPRO_STREAMING);
+          //  TODO    BroadcastManager.get().send(COMM_RESUME_GOPRO_STREAMING);
             } else {
                 showAbortDialog();
             }
         }
 
         private void showAbortDialog() {
-            BroadcastManager
+          /*TODO  BroadcastManager
                     .get()
                     .sendStringAndInt(
                             Action.COMM_UPDATE_DIALOG,
                             WifiDirectCore.getAppContext()
                                     .getString(R.string.dialog_video_sent_abort),
-                            DIALOG_ABORT);
+                            DIALOG_ABORT);*/
         }
 
         private void showSuccessDialog() {
-            BroadcastManager
+     /*       BroadcastManager
                     .get()
                     .sendStringAndInt(
                             Action.COMM_UPDATE_DIALOG,
                             WifiDirectCore.getAppContext()
                                     .getString(R.string.dialog_video_sent_success),
-                            DIALOG_SUCCESS);
+                            DIALOG_SUCCESS);*/
         }
 
         private void showInformDialog() {
-            BroadcastManager
+          /*  BroadcastManager
                     .get()
                     .sendStringAndInt(
                             Action.COMM_UPDATE_DIALOG,
                             WifiDirectCore.getAppContext()
                                     .getString(R.string.dialog_sending_video),
-                            DIALOG_INFORM);
+                            DIALOG_INFORM);*/
         }
     }
 

@@ -2,10 +2,10 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.utils.Utils;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.Message;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
+import com.nlt.mobileteam.wifidirect.utils.SocketUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,7 +40,7 @@ public abstract class ChatManager implements Runnable {
         try {
             this.socket.setSoTimeout(0);
             if (this.socket.isConnected()) {
-                Utils.trySetupKeepAliveOptions(this.socket);
+                 SocketUtil.trySetupKeepAliveOptions(this.socket);
                 iStream = new DataInputStream(this.socket.getInputStream());
                 oStream = new DataOutputStream(this.socket.getOutputStream());
                 streamOpen = true;

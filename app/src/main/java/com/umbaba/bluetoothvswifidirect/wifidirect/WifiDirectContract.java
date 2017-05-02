@@ -1,6 +1,7 @@
-package com.umbaba.bluetoothvswifidirect.bluetooth;
+package com.umbaba.bluetoothvswifidirect.wifidirect;
 
 import android.bluetooth.BluetoothDevice;
+import android.net.wifi.p2p.WifiP2pDevice;
 
 import com.umbaba.bluetoothvswifidirect.BaseView;
 
@@ -11,11 +12,11 @@ import java.util.Set;
  * Created by Nick on 17.04.2017.
  */
 
-public interface BluetoothContract {
+public interface WifiDirectContract {
     interface View extends BaseView<Presenter> {
 
 
-        void addDevice(BluetoothDevice bluetoothDevice);
+        void addDevice(WifiP2pDevice wifiP2pDevice);
 
         void discoverStarted();
 
@@ -27,19 +28,21 @@ public interface BluetoothContract {
 
         void enableSend();
 
-        void addDevices(Set<BluetoothDevice> bluetoothDevices);
     }
 
-    interface Presenter  {
+    interface Presenter {
 
-        void start();
 
-        List<BluetoothDevice> getDevices();
+        List<WifiP2pDevice> getDevices();
 
         void stop();
 
         void itemSelected(int position);
 
         void sendFile(int size);
+
+        void startDirector();
+
+        void startAssistant();
     }
 }

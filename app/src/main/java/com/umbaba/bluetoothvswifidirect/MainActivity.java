@@ -18,6 +18,8 @@ import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
 import com.umbaba.bluetoothvswifidirect.testdata.DefaultFileData;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
+import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectFragment;
+import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectPresenter;
 
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.BLE_FILE_SEND;
 
@@ -27,9 +29,10 @@ public class MainActivity extends FragmentActivity {
     private Button testBluetooth;
 
     private ComparationPresenter comparationPresenter;
-    private BluetoothPresenter bluetoothPresenter;
     private TestFileModel testFileModel;
     private ComparationModel comparationModel;
+    private WifiDirectPresenter wifiDirectPresenter;
+    private BluetoothPresenter bluetoothPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class MainActivity extends FragmentActivity {
         testWifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showWifiTest();
             }
         });
     }
@@ -66,6 +69,16 @@ public class MainActivity extends FragmentActivity {
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
         bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationModel);
+
+    }
+    private void showWifiTest() {
+        WifiDirectFragment wifiDirectFragment =
+                (WifiDirectFragment) getSupportFragmentManager().findFragmentById(WifiDirectFragment.ID);
+        if (wifiDirectFragment == null) {
+            wifiDirectFragment = WifiDirectFragment.newInstance();
+            ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), wifiDirectFragment, R.id.contentFrame);
+        }
+        wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationModel);
 
     }
 

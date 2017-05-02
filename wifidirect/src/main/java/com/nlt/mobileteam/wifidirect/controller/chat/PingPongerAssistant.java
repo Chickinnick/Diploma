@@ -2,14 +2,15 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
 import com.nlt.mobileteam.wifidirect.controller.Message;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.net.Socket;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_DIRECTOR_DISCONNECTING;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_ASSISTANT_DISCONNECTING;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_PONG;
 
@@ -35,7 +36,7 @@ public class PingPongerAssistant extends ChatManager {
             if (VERBOSE) Log.w(TAG, "COMM_DIRECTOR_DISCONNECTING");
             if (!isClosing) {
                 closeSocketConnection();
-                BroadcastManager.get().send(COMM_DIRECTOR_DISCONNECTING);
+                EventBus.getDefault().post(new DirectorDisconnect());
             }
         }
 

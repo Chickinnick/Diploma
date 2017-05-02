@@ -1,14 +1,15 @@
 package com.nlt.mobileteam.wifidirect.controller.chat;
 
-import com.nlt.mobileteam.cinacore.net.MediaStreamsHandler;
-import com.nlt.mobileteam.cinacore.utils.Utils;
+
+import com.nlt.mobileteam.wifidirect.controller.socket.MediaStreamsHandler;
+import com.nlt.mobileteam.wifidirect.utils.SocketUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class MediaManager implements MediaStreamsHandler{
+public class MediaManager implements MediaStreamsHandler {
     private static final String TAG = MediaManager.class.getSimpleName();
 
     private Socket videoSocket;
@@ -21,8 +22,8 @@ public class MediaManager implements MediaStreamsHandler{
     }
 
     private void setupKeepAlive(Socket videoSocket, Socket audioSocket) {
-        Utils.trySetupKeepAliveOptions(videoSocket);
-        Utils.trySetupKeepAliveOptions(audioSocket);
+        SocketUtil.trySetupKeepAliveOptions(videoSocket);
+        SocketUtil.trySetupKeepAliveOptions(audioSocket);
     }
 
     @Override

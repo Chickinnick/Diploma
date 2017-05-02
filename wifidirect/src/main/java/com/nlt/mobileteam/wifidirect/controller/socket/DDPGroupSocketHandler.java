@@ -2,8 +2,6 @@ package com.nlt.mobileteam.wifidirect.controller.socket;
 
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
-import com.nlt.mobileteam.cinacore.CinaCoreModule;
 import com.nlt.mobileteam.wifidirect.ConnectSocketException;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.Message;
@@ -18,8 +16,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import static com.nlt.mobileteam.cinacore.Action.COMM_ASSISTANT_CONNECTED;
-import static com.nlt.mobileteam.cinacore.Action.COMM_DISABLE_REC;
 
 public class DDPGroupSocketHandler extends AbstractGroupOwnerSocketHandler {
     private static final String TAG = DDPGroupSocketHandler.class.getSimpleName();
@@ -44,14 +40,12 @@ public class DDPGroupSocketHandler extends AbstractGroupOwnerSocketHandler {
         int deviceIndex = -1;
         Log.i(TAG, "launchChatManager, indexToInsert = " + indexToInsert);
         if (clientSocket != null) {
-            BroadcastManager.get().send(COMM_DISABLE_REC);
+        //TODO    BroadcastManager.get().send(COMM_DISABLE_REC);
             ChatManager manager = new ChatManagerChief(clientSocket, deviceToConnect);
             pool.execute(manager);
 
-            if (CinaCoreModule.USE_PINGER && indexToInsert != -1) {
+            if (   indexToInsert != -1) {
                 deviceIndex = CommunicationController.get().addMessageChatManager(manager, indexToInsert);
-            } else {
-                deviceIndex = CommunicationController.get().addMessageChatManager(manager);
             }
 
             try {
@@ -95,7 +89,7 @@ public class DDPGroupSocketHandler extends AbstractGroupOwnerSocketHandler {
                                         new MediaManager(clientVideoSocket, clientAudioSocket));
             }
 
-            BroadcastManager.get().sendInt(COMM_ASSISTANT_CONNECTED , deviceIndex);
+    //TODO        BroadcastManager.get().sendInt(COMM_ASSISTANT_CONNECTED , deviceIndex);
 
         } catch (IOException e) {
             Log.e(TAG, "processMediaSocketConnections failed", e);

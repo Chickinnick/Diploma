@@ -13,10 +13,12 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
 import com.nlt.mobileteam.wifidirect.controller.socket.SocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pAssistant;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
 import com.nlt.mobileteam.wifidirect.service.PeerBroadcastService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.net.InetAddress;
 
@@ -32,7 +34,6 @@ import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_AC
 import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION;
 import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION;
 import static android.text.TextUtils.isEmpty;
-import static com.nlt.mobileteam.cinacore.Action.COMM_DIRECTOR_DISCONNECTING;
 
 public class WiFiP2pReceiverAssistant extends BroadcastReceiver {
     private static final String TAG = "_BROADCAST";
@@ -121,8 +122,7 @@ public class WiFiP2pReceiverAssistant extends BroadcastReceiver {
             if (isEmpty(group.getNetworkName()) && thisDevice.status == AVAILABLE && !networkInfo.isConnected()) {
                 if (isConnected) {
                     if (VERBOSE) Log.w(TAG, "COMM_DIRECTOR_DISCONNECTING");
-                    BroadcastManager.get().send(COMM_DIRECTOR_DISCONNECTING);
-
+                    EventBus.getDefault().post(new DirectorDisconnect());
                     isConnected = false;
                 }
             } else if (!isEmpty(group.getNetworkName()) && thisDevice.status == AVAILABLE && !networkInfo.isConnected()) {

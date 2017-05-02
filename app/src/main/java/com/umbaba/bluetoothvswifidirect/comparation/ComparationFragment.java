@@ -61,12 +61,6 @@ public class ComparationFragment extends Fragment implements ComparationContract
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.subscribe();
-
-    }
 
     @Override
     public void showCriterion(List<Criteria> criterions) {

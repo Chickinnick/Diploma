@@ -13,10 +13,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
-import com.nlt.mobileteam.cinacore.BroadcastManager;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pAssistant;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
+import com.nlt.mobileteam.wifidirect.model.InstanceCode;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 
 
@@ -32,7 +32,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nlt.mobileteam.cinacore.Action.GET_FILE_CONTENT_URI;
 
 public class FileUtils {
 
@@ -54,7 +53,7 @@ public class FileUtils {
 
         String extension = ".mp4";
 
-        WifiP2pDevice thisDevice = instance == WifiDirectCore.INSTANCE_CODE_DIRECTOR ? WiFiP2pDirector.get().getThisDevice()
+        WifiP2pDevice thisDevice = instance == InstanceCode.DIRECTOR ? WiFiP2pDirector.get().getThisDevice()
                 : WiFiP2pAssistant.get().getThisDevice();
         String result = TextUtils.isEmpty(uuid) ? "" : uuid;
         if (!TextUtils.isEmpty(result) && thisDevice != null) {
@@ -159,7 +158,7 @@ public class FileUtils {
     }
 
     public static void registerFile(String path) {
-        MediaScannerConnection.scanFile(
+    /*TODO    MediaScannerConnection.scanFile(
                 WifiDirectCore.getAppContext(),
                 new String[]{new File(path).getAbsolutePath()},
                 null,
@@ -173,7 +172,7 @@ public class FileUtils {
 //                            e.printStackTrace();
                         }
                     }
-                });
+                });*/
     }
 
     public static Uri prepareConvertedPath(String inputUri, int index) {

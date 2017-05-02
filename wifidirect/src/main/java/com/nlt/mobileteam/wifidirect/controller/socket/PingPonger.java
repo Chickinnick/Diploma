@@ -6,6 +6,7 @@ import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.chat.PingPongerChief;
 import com.nlt.mobileteam.wifidirect.controller.chat.callback.PingPongerCallBack;
+import com.nlt.mobileteam.wifidirect.model.InstanceCode;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 
 import java.net.Socket;
@@ -46,7 +47,7 @@ public class PingPonger implements Runnable {
                 if (VERBOSE) {
                     Log.v(TAG, "processMessage(MESSAGE_PONG) health = " + health + " Assistants count = " + count);
                 }
-                if (WifiDirectCore.cameraSessionInstanceCode == WifiDirectCore.INSTANCE_CODE_DIRECTOR_DDP) {
+                if (WifiDirectCore.cameraSessionInstanceCode == InstanceCode.DIRECTOR_DDP) {
                     health = HEALTH_RATE; //re-init health in soft mode to avoid ping issue due to file transmission etc.
                 } else {
                     health = HEALTH_RATE + 2;

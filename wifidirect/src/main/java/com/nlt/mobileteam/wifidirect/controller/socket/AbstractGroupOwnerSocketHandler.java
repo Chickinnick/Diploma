@@ -17,8 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.nlt.mobileteam.cinacore.CinaCoreModule.USE_PINGER;
-
 public abstract class AbstractGroupOwnerSocketHandler extends SocketHandler {
     protected static final String TAG = AbstractGroupOwnerSocketHandler.class.getSimpleName();
 
@@ -108,11 +106,11 @@ public abstract class AbstractGroupOwnerSocketHandler extends SocketHandler {
             ServerSocket serverSocket = null;
             ServerSocket pingPongSocket = null;
             try {
-                if (USE_PINGER) {
+
                     pingPongSocket = getOpenServerSocket(SERVER_PING_PONG_PORT);
                     pingPongSocket.setSoTimeout(SOCKET_TIMEOUT_LONG);
                     pingPongClientSocket = pingPongSocket.accept();
-                }
+
 
                 serverSocket = getOpenServerSocket(SERVER_COMMAND_PORT);
                 serverSocket.setSoTimeout(SOCKET_TIMEOUT_LONG);
@@ -128,7 +126,6 @@ public abstract class AbstractGroupOwnerSocketHandler extends SocketHandler {
                 closeSocket(serverSocket);
             }
             if (success) {
-                if (USE_PINGER) {
                     PingPonger pingPonger = new PingPonger(pingPongClientSocket, deviceToConnect);
                     startRunnable(pingPonger, "PingPonger Thread");
                     try {
@@ -138,11 +135,6 @@ public abstract class AbstractGroupOwnerSocketHandler extends SocketHandler {
                         e.printStackTrace();
                     }
                     pingPonger.delayRate = 1;
-                } else {
-                    result = launchChatManager(clientSocket, deviceToConnect, -1);
-                    Log.w(TAG, "not using pinger!!! ");
-                }
-
             } else {
                 closeSocket(pingPongSocket);
                 closeSocket(clientSocket);

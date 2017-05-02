@@ -2,13 +2,10 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
 
-import com.nlt.mobileteam.cinacore.Action;
-import com.nlt.mobileteam.cinacore.BroadcastManager;
 import com.nlt.mobileteam.wifidirect.utils.FileUtils;
 import com.nlt.mobileteam.wifidirect.R;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.utils.exception.VideoFilePartReceiverException;
-import com.nlt.mobileteam.cinacore.model.VideoReceivingProgress;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -127,40 +124,40 @@ public class VideoFilePartWriter {
         }
 
         private void finishProgressBar() {
-            BroadcastManager
+          /*  BroadcastManager
                     .get()
                     .sendStringAndInt(
                             Action.COMM_PROJECT_VIDEO_RECEIVED,
                             video.getPath(),
-                            deviceIndex);
+                            deviceIndex);*/
         }
 
         private void abortProgressBar() {
-            BroadcastManager
+           /* TODO BroadcastManager
                     .get()
                     .sendInt(
                             Action.COMM_PROJECT_VIDEO_RECEIVE_ABORTED,
                             deviceIndex);
-        }
+        */}
 
         private void updateProgressBar() {
-            BroadcastManager
+            /*BroadcastManager
                     .get()
                     .sendSerializable(
                             Action.COMM_PROJ_PART_RECEIVED,
                             new VideoReceivingProgress(
                                     videoFileLength,
                                     totalProgress,
-                                    deviceIndex, null));
+                                    deviceIndex, null));*/
         }
 
         private void startProgressBar() {
-            BroadcastManager
+      /*      BroadcastManager
                     .get()
                     .sendStringAndInt(
                             Action.COMM_SET_PROGRESS_STATUS,
                             WifiDirectCore.getAppContext().getResources().getString(R.string.receiving),
-                            deviceIndex);
+                            deviceIndex);*/
         }
     }
 }

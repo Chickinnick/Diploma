@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/result"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="@dimen/buttons_padding">
+
+
+        <Button
+            android:id="@+id/start_director"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_weight="1"
+            android:background="@color/colorInactive"
+            android:text="@string/start_group_owner"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/start_assistant"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_weight="1"
+            android:background="@color/colorInactive"
+            android:text="@string/start_as_peer"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="@string/stop_dis"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/send_group"
+        layout="@layout/send_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+</LinearLayout>
