@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
@@ -137,7 +139,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     }
 
 
-
     @Override
     public void discoverFinished() {
     }
@@ -177,10 +178,14 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     }
 
     @Override
-    public void addDevice(WifiP2pDevice device) {
-        String deviceName = device.deviceName;
-        Log.i(TAG, "addDevice: " + deviceName);
-        adapter.add(deviceName);
+    public void setDevices(DeviceList devices) {
+        adapter.clear();
+        for (WiFiP2pService wiFiP2pService : devices.getTrimList()) {
+            String instanceName = wiFiP2pService.instanceName;
+            adapter.add(instanceName);
+            Log.i(TAG, "addDevice: " + instanceName);
+        }
+
     }
 
 

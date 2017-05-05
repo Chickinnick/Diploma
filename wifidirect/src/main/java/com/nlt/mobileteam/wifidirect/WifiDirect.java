@@ -27,7 +27,6 @@ public class WifiDirect {
         WifiDirectCore.cameraSessionInstanceCode = instanceCode;
         mInstanceCode = instanceCode;
          registerReceivers();
-//        EventBus.getDefault().register(actionListener);
         WiFiP2pAssistant.setContext(context);
         WiFiP2pDirector.setContext(context);
         prepareServices();
@@ -88,6 +87,8 @@ public class WifiDirect {
 
     public void setActionListener(WifiDirectActionListener actionListener) {
         this.actionListener = actionListener;
+        EventBus.getDefault().register(actionListener);
+
     }
 
 }

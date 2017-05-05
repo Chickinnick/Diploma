@@ -16,6 +16,8 @@ import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.List;
 
@@ -74,19 +76,20 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     @Override
     public void startDirector() {
         wifiDirect = WifiDirect.init(activity , InstanceCode.DIRECTOR);
-        wifiDirect.setActionListener(new DirectorActionListener() {
+        DirectorActionListener actionListener = new DirectorActionListener() {
             @Override
             public void handleDeviceList(NotifyDeviceList event) {
                 devices = event.getDeviceList();
-
+                view.setDevices(devices);
             }
-        });
+        };
+        wifiDirect.setActionListener(actionListener);
     }
 
     @Override
     public void startAssistant() {
         wifiDirect = WifiDirect.init(activity , InstanceCode.ASSISTANT);
-        wifiDirect.setActionListener(new AssistantActionListener() {
+        AssistantActionListener actionListener = new AssistantActionListener() {
             @Override
             public void directorConnected(DirectorConnect event) {
 
@@ -96,7 +99,8 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             public void directorDisconnected(DirectorDisconnect event) {
 
             }
-        });
+        };
+        wifiDirect.setActionListener(actionListener);
     }
 
     @Override

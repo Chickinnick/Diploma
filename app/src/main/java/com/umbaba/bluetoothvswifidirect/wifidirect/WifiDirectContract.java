@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.net.wifi.p2p.WifiP2pDevice;
 
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.BaseView;
 
 import java.util.List;
@@ -17,8 +18,6 @@ public interface WifiDirectContract {
     interface View extends BaseView<Presenter> {
 
 
-        void addDevice(WifiP2pDevice wifiP2pDevice);
-
         void discoverStarted();
 
         void discoverFinished();
@@ -29,6 +28,7 @@ public interface WifiDirectContract {
 
         void enableSend();
 
+        void setDevices(DeviceList devices);
     }
 
     interface Presenter {
