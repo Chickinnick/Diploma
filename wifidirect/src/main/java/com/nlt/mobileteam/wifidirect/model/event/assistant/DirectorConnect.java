@@ -11,4 +11,8 @@ public class DirectorConnect {
 
         this.deviceName = deviceName;
     }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
 }

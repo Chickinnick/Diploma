@@ -103,7 +103,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
         AssistantActionListener actionListener = new AssistantActionListener() {
             @Override
             public void directorConnected(DirectorConnect event) {
-
+                view.setDeviceName(event.getDeviceName());
             }
 
             @Override

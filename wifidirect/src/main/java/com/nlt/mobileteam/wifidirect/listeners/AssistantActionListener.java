@@ -6,14 +6,15 @@ import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 public class AssistantActionListener implements WifiDirectActionListener {
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void directorConnected(DirectorConnect event){};
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void directorDisconnected(DirectorDisconnect event){};
 
 }

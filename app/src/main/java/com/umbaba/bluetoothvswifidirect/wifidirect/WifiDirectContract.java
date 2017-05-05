@@ -31,6 +31,8 @@ public interface WifiDirectContract {
         void setDevices(DeviceList devices);
 
         void refreshDevices();
+
+        void setDeviceName(String deviceName);
     }
 
     interface Presenter {

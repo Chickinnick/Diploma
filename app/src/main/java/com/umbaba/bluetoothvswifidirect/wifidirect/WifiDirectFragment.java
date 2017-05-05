@@ -198,6 +198,11 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void setDeviceName(String deviceName) {
+        stop.setText(deviceName);
+    }
+
     public static class RVAdapter extends RecyclerView.Adapter<WifiDirectFragment.RVAdapter.BluetoothViewHolder> {
         private OnItemClickListener onItemClickListener;
 
