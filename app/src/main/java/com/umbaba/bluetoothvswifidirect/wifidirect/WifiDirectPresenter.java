@@ -81,7 +81,11 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             @Override
             public void handleDeviceList(NotifyDeviceList event) {
                 devices = event.getDeviceList();
-                view.setDevices(devices);
+                if (devices == null) {
+                    view.refreshDevices();
+                } else {
+                    view.setDevices(devices);
+                }
             }
         };
         wifiDirect.setActionListener(actionListener);

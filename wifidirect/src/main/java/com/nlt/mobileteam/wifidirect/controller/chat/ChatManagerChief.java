@@ -75,7 +75,7 @@ public class ChatManagerChief extends ChatManager {
         try {
             command = Message.valueOfOrdinal(message);
         } catch (Exception e) {
-            Log.e(TAG, "Error parsing message ");
+            Log.e(TAG, "Error parsing message ", e);
             return;
         }
 

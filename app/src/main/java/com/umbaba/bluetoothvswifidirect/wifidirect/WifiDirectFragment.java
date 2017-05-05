@@ -177,7 +177,9 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     @Override
     public void setDevices(DeviceList devices) {
         adapter.clear();
-        for (WiFiP2pService wiFiP2pService : devices.getTrimList()) {
+        List<WiFiP2pService> trimList = devices.getTrimList();
+        if (trimList == null) return;
+        for (WiFiP2pService wiFiP2pService : trimList) {
             String instanceName = wiFiP2pService.instanceName;
             adapter.add(instanceName);
             Log.i(TAG, "addDevice: " + instanceName);
@@ -185,6 +187,10 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
 
     }
 
+    @Override
+    public void refreshDevices() {
+        adapter.notifyDataSetChanged();
+    }
 
     public static class RVAdapter extends RecyclerView.Adapter<WifiDirectFragment.RVAdapter.BluetoothViewHolder> {
         private OnItemClickListener onItemClickListener;

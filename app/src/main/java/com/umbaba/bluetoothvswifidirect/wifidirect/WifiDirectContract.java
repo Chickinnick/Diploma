@@ -29,6 +29,8 @@ public interface WifiDirectContract {
         void enableSend();
 
         void setDevices(DeviceList devices);
+
+        void refreshDevices();
     }
 
     interface Presenter {
