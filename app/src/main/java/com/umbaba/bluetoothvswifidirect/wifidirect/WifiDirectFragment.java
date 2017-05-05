@@ -151,6 +151,12 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.destroy();
+    }
+
+    @Override
     public void enableSend() {
         sendGroup.setVisibility(View.VISIBLE);
         View.OnClickListener onClickListener = new View.OnClickListener() {

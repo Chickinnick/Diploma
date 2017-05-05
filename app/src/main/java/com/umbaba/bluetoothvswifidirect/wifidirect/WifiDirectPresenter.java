@@ -54,6 +54,12 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     }
 
     @Override
+    public void destroy(){
+        wifiDirect.destroy();
+    }
+
+
+    @Override
     public void itemSelected(int position) {
         view.enableSend();
     }
