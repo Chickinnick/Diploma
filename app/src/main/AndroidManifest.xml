@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.nlt.mobileteam.wifidirect.service.PeerBroadcastService" />
+        <service android:name="com.nlt.mobileteam.wifidirect.service.PeersDiscoverService" />
     </application>
 
 </manifest>

@@ -36,7 +36,7 @@ public interface WifiDirectContract {
 
         List<WiFiP2pService> getDevices();
 
-        void stop();
+        void pause();
 
         void itemSelected(int position);
 

@@ -1,15 +1,12 @@
 package com.umbaba.bluetoothvswifidirect.wifidirect;
 
 
-import android.bluetooth.BluetoothDevice;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +22,6 @@ import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
@@ -64,6 +60,7 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     @Override
     public void onPause() {
         super.onPause();
+        mPresenter.pause();
     }
 
 
@@ -117,7 +114,7 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.stop();
+                mPresenter.pause();
             }
         });
     }

@@ -27,8 +27,8 @@ public class WifiDirect {
         WifiDirectCore.cameraSessionInstanceCode = instanceCode;
         mInstanceCode = instanceCode;
          registerReceivers();
-        WiFiP2pAssistant.setContext(context);
-        WiFiP2pDirector.setContext(context);
+        WiFiP2pAssistant.init(context);
+        WiFiP2pDirector.init(context);
         prepareServices();
 
     }
@@ -46,7 +46,15 @@ public class WifiDirect {
 
 
 
-    public void onStop() {
+    public void onPause() {
+        if (mInstanceCode == InstanceCode.ASSISTANT) {
+            WiFiP2pAssistant.get().setCameraActivity(false);
+        } else if (mInstanceCode == InstanceCode.DIRECTOR) {
+            WiFiP2pDirector.get().clearLocalServices();
+        }
+
+        context.unregisterReceiver(wifiStateChangedReceiver);
+
         EventBus.getDefault().unregister(actionListener);
     }
 

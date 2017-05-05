@@ -31,22 +31,14 @@ import java.util.Map;
 public class WiFiP2pAssistant {
     private static final String TAG = "_WiFiP2pAssistant";
     private volatile static WiFiP2pAssistant instance;
-    private static Context context;
+    private final Context context;
     private String ownerName;
     private static final Object initSynObj = new Object();
     private static final boolean VERBOSE = true;
     private WiFiP2pAssistantCallback callback;
     private volatile boolean isConnecting;
 
-    private WiFiP2pAssistant(WiFiP2pAssistantCallback callback) {
-        this.callback = callback;
-        manager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
-        channel = manager.initialize(context, context.getMainLooper(), channelListener);
-        receiver = new WiFiP2pReceiverAssistant(manager, channel);
-    }
-
-
-    public static WiFiP2pAssistant get() {
+    public static void init(Context context){
         if (instance == null) {
             synchronized (initSynObj) {
                 if (instance == null) {
@@ -59,10 +51,20 @@ public class WiFiP2pAssistant {
                                 instance.prepareService();
                             }
                         }
-                    });
+                    } , context);
                 }
             }
         }
+    }
+    private WiFiP2pAssistant(WiFiP2pAssistantCallback callback , Context context) {
+        this.callback = callback;
+        this.context = context;
+        manager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(context, context.getMainLooper(), channelListener);
+        receiver = new WiFiP2pReceiverAssistant(manager, channel);
+    }
+
+    public static WiFiP2pAssistant get() {
         return instance;
     }
 
@@ -569,10 +571,6 @@ public class WiFiP2pAssistant {
         return inGroup;
     }
 
-
-    public static void setContext(Context context) {
-        WiFiP2pAssistant.context = context;
-    }
 
     public void setInGroup(boolean inGroup) {
         this.inGroup = inGroup;

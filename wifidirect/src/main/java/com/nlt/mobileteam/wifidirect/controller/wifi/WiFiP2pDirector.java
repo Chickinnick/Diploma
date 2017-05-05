@@ -46,7 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class WiFiP2pDirector {
     public final static String TAG = "_WiFiP2pDirector";
-    private static Context context;
+    private Context context;
     private static final Object initSynObj = new Object();
     private static final boolean VERBOSE = true;
 
@@ -70,7 +70,8 @@ public class WiFiP2pDirector {
 
 
 
-    private WiFiP2pDirector() {
+    private WiFiP2pDirector(Context context) {
+        this.context = context;
         manager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(context, context.getMainLooper(), channelListener);
         receiver = new WiFiP2pReceiverDirector(manager);
@@ -78,14 +79,17 @@ public class WiFiP2pDirector {
 
     private static WiFiP2pDirector instance;
 
-    public static WiFiP2pDirector get() {
+
+    public static void init(Context context) {
         if (instance == null) {
             synchronized (initSynObj) {
                 if (instance == null) {
-                    instance = new WiFiP2pDirector();
+                    instance = new WiFiP2pDirector(context);
                 }
             }
         }
+    }
+    public static WiFiP2pDirector get() {
         return instance;
     }
 
@@ -596,11 +600,8 @@ public class WiFiP2pDirector {
     }
 
 
-    public static void setContext(Context context) {
-        WiFiP2pDirector.context = context;
-    }
-
     public boolean isNoConnectedDevices() {
         return devicesList.size() == 0;
     }
+
 }

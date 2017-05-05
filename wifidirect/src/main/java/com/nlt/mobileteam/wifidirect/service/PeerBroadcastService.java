@@ -19,7 +19,7 @@ import java.util.Random;
 public class PeerBroadcastService extends Service {
     public static PeerBroadcastService instance;
     private static final String TAG = "PeerBroadcastService";
-    private static final boolean VERBOSE = false;
+    private static final boolean VERBOSE = true;
 
     public static final int START = 0x10 + 1;
     public static final int STOP = 0x10 + 2;

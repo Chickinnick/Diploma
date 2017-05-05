@@ -49,7 +49,8 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     }
 
     @Override
-    public void stop() {
+    public void pause() {
+        wifiDirect.onPause();
     }
 
     @Override
