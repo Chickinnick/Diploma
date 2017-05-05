@@ -21,8 +21,6 @@ import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_ABORT_VID
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_ASSISTANT_DISCONNECTING;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_HEADER_SENDING_VIDEO;
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_PART_OF_VIDEO_SENDING;
-import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_READY;
-import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_SYNC_SEND_BACK;
 
 public class ChatManagerAssistant extends ChatManager {
 
@@ -42,8 +40,7 @@ public class ChatManagerAssistant extends ChatManager {
 
     @Override
     public void run() {
-        write(MESSAGE_READY, WiFiP2pAssistant.get().getThisDevice().deviceName);
-        EventBus.getDefault().post(new DirectorConnect());
+        EventBus.getDefault().post(new DirectorConnect(WiFiP2pAssistant.get().getThisDevice().deviceName));
 
 
         try {

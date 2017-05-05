@@ -61,7 +61,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;
@@ -84,7 +84,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write" ,e);
                         return false;
                     }
                     return true;
@@ -108,7 +108,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;
@@ -131,7 +131,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;
@@ -154,7 +154,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;
@@ -178,7 +178,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;
@@ -202,7 +202,7 @@ public abstract class ChatManager implements Runnable {
                             oStream.flush();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "Exception during write");
+                        Log.e(TAG, "Exception during write",e);
                         return false;
                     }
                     return true;

@@ -5,4 +5,10 @@ package com.nlt.mobileteam.wifidirect.model.event.assistant;
  */
 
 public class DirectorConnect {
+    private String deviceName;
+
+    public DirectorConnect(String deviceName) {
+
+        this.deviceName = deviceName;
+    }
 }
