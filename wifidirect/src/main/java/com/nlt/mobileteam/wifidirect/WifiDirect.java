@@ -141,4 +141,7 @@ public class WifiDirect {
         EventBus.getDefault().register(subscriber);
     }
 
+    public void addOnFileTransferListener(TransferingActionListener transferingActionListener) {
+        EventBus.getDefault().register(transferingActionListener);
+    }
 }

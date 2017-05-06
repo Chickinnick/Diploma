@@ -3,6 +3,7 @@ package com.umbaba.bluetoothvswifidirect.wifidirect;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
@@ -99,6 +100,22 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             }
         };
         wifiDirect.setActionListener(actionListener);
+        wifiDirect.addOnFileTransferListener(new TransferingActionListener(){
+            @Override
+            public void fileAborted(Abort event) {
+                Log.e(TAG, "fileAborted: " + event.getDeviceIndex());
+            }
+
+            @Override
+            public void doInProgress(Progress progress) {
+                Log.i(TAG, "doInProgress: " + progress);
+            }
+
+            @Override
+            public void onSuccessed(Success event) {
+                Log.i(TAG, "onSuccessed:" + event);
+            }
+        });
     }
 
     @Override

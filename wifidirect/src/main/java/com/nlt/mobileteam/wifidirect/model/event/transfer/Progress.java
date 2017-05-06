@@ -18,4 +18,13 @@ public class Progress {
         this.totalProgress = totalProgress;
         this.deviceIndex = deviceIndex;
     }
+
+    @Override
+    public String toString() {
+        return "Progress{" +
+                "videoFileLength=" + videoFileLength +
+                ", totalProgress=" + totalProgress +
+                ", deviceIndex=" + deviceIndex +
+                '}';
+    }
 }
