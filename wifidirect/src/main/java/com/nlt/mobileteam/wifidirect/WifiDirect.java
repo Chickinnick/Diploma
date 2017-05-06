@@ -8,12 +8,18 @@ import android.util.Log;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pAssistant;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
+import com.nlt.mobileteam.wifidirect.listeners.TransferingActionListener;
 import com.nlt.mobileteam.wifidirect.listeners.WifiDirectActionListener;
 import com.nlt.mobileteam.wifidirect.model.InstanceCode;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.receiver.WifiStateChangedReceiver;
 import com.nlt.mobileteam.wifidirect.service.PeerBroadcastService;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_STOP_PEER_BROADCAST_SERVICE;
 
@@ -128,6 +134,11 @@ public class WifiDirect {
         this.actionListener = actionListener;
         EventBus.getDefault().register(actionListener);
 
+    }
+
+    public void sendFile(File file, TransferingActionListener subscriber ){
+        CommunicationController.get().sendRecordedVideo(file);
+        EventBus.getDefault().register(subscriber);
     }
 
 }

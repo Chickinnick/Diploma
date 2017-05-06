@@ -44,7 +44,6 @@ public interface WifiDirectContract {
 
         void destroy();
 
-        void itemSelected(int position);
 
         void sendFile(int size);
 

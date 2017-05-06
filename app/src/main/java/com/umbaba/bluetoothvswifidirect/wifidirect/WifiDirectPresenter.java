@@ -7,12 +7,16 @@ import android.net.Uri;
 import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.listeners.AssistantActionListener;
 import com.nlt.mobileteam.wifidirect.listeners.DirectorActionListener;
+import com.nlt.mobileteam.wifidirect.listeners.TransferingActionListener;
 import com.nlt.mobileteam.wifidirect.model.InstanceCode;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorConnect;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.OwnerName;
 import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
@@ -24,9 +28,6 @@ import java.util.List;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
-/**
- * Created by Nick on 17.04.2017.
- */
 
 public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
@@ -61,24 +62,25 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
 
     @Override
-    public void itemSelected(int position) {
-        view.enableSend();
-    }
-
-
-    @Override
     public void sendFile(int size) {
         File file = fileModel.getFile(size);
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("*/*");
-        sharingIntent.setPackage("com.android.bluetooth");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        TransferingActionListener transferingActionListener = new TransferingActionListener() {
+            @Override
+            public void fileAborted(Abort event) {
 
-//        starttime = System.currentTimeMillis();
-//        fileSize = Long.valueOf(file.length());
-        activity.startActivityForResult(
-                Intent.createChooser(sharingIntent, "Share file"),
-                BLE_FILE_SEND);
+            }
+
+            @Override
+            public void doInProgress(Progress progress) {
+
+            }
+
+            @Override
+            public void onSuccessed(Success event) {
+
+            }
+        };
+        wifiDirect.sendFile(file , transferingActionListener);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             @Override
             public void ownerName(OwnerName event) {
                 view.setDeviceName(event.getOwnerName());
-
+                view.enableSend();
             }
         };
         wifiDirect.setActionListener(actionListener);

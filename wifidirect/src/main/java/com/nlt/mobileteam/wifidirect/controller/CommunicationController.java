@@ -20,6 +20,7 @@ import com.nlt.mobileteam.wifidirect.utils.exception.MessageControllerException;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.Socket;
 
 import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_MEDIA_FORMAT;
@@ -411,10 +412,10 @@ public class CommunicationController {
         }
     }
 
-    public void sendRecordedVideo(String recordedVideoPath) {
+    public void sendRecordedVideo(File file) {
         for (ChatManager cm : chatManagers) {
             if (!chatManagers.isEmptyCommunicator(cm)) {
-                ((ChatManagerAssistant) cm).sendVideoHader(recordedVideoPath);
+                ((ChatManagerAssistant) cm).sendVideoHader(file);
             }
         }
     }

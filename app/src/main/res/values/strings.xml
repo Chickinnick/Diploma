@@ -8,4 +8,5 @@
     <string name="button_searching">Searching...</string>
 
     <string name="start_as_peer">Start as peer</string>
+    <string name="start_group_owner">Start group owner</string>
 </resources>

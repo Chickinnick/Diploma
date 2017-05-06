@@ -121,12 +121,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
 
     private void initAdaper() {
         adapter = new RVAdapter();
-        adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int position, View view) {
-                mPresenter.itemSelected(position);
-            }
-        });
         recyclerView.setAdapter(adapter);
     }
 
