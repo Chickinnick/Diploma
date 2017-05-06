@@ -18,11 +18,14 @@ import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.OwnerName;
 import com.nlt.mobileteam.wifidirect.service.PeerBroadcastService;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
 import com.nlt.mobileteam.wifidirect.wifiP2pListeners.ChannelListener;
 import com.nlt.mobileteam.wifidirect.wifiP2pListeners.DnsSdRLAssistant;
 import com.nlt.mobileteam.wifidirect.wifiP2pListeners.WiFiP2pReceiverAssistant;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -564,7 +567,7 @@ public class WiFiP2pAssistant {
 
     public void broadcastOwnerName() {
         if (context != null) {
-    //TODO        BroadcastManager.get().sendString(COMM_SET_OWNER, ownerName);
+            EventBus.getDefault().post(new OwnerName(ownerName));
         }
     }
     public boolean isInGroup() {

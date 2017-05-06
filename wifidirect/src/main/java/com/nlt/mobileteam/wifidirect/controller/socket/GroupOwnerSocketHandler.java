@@ -27,7 +27,6 @@ public class GroupOwnerSocketHandler extends AbstractGroupOwnerSocketHandler {
     protected int launchChatManager(Socket clientSocket, WiFiP2pService deviceToConnect, int indexToInsert) {
         int result = -1;
         if (clientSocket != null) {
-       //TODO     BroadcastManager.get().send(COMM_DISABLE_REC);
             ChatManager manager = new ChatManagerChief(clientSocket, deviceToConnect);
             pool.execute(manager);
 

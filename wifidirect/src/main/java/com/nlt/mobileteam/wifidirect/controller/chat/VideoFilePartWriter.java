@@ -117,7 +117,6 @@ public class VideoFilePartWriter {
 
                 Log.e(TAG, "video file deleted.");
             } else {
-                FileUtils.registerFile(video.getPath());
 
                 finishProgressBar();
             }

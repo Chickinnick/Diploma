@@ -40,7 +40,7 @@ public class ChatManagerAssistant extends ChatManager {
 
     @Override
     public void run() {
-        EventBus.getDefault().post(new DirectorConnect(WiFiP2pAssistant.get().getThisDevice().deviceName));
+        EventBus.getDefault().post(new DirectorConnect());
 
 
         try {
@@ -72,7 +72,6 @@ public class ChatManagerAssistant extends ChatManager {
         if (!isClosing) {
             isClosing = true;
             if (VERBOSE) Log.w(TAG, "sending close report to Director");
-            //TODO: ADD and check: if (USE_PINGER) - DO NOT SEND THIS COMMAND!!!
             write(MESSAGE_ASSISTANT_DISCONNECTING);
             super.closeSocketConnection(callback);
         }
@@ -88,31 +87,10 @@ public class ChatManagerAssistant extends ChatManager {
         }
 
         switch (command) {
-          /*TODO  case MESSAGE_DELETE_RECORDED: {
-                if (VERBOSE) Log.w(TAG, "MESSAGE_DELETE_RECORDED");
-                BroadcastManager.get().send(COMM_DELETE_RECORDED);
-                break;
-            }
-            case MESSAGE_PROJ_INFO: {
-                if (VERBOSE) Log.w(TAG, "MESSAGE_PROJ_INFO");
-                BroadcastManager.get()
-                        .sendStringAndInt(COMM_PROJ_INFO, iStream.readUTF(), iStream.readInt());
-                break;
-            }
-            case MESSAGE_SAVE_LOCAL: {
-                if (VERBOSE) Log.w(TAG, "MESSAGE_SAVE_LOCAL");
-                BroadcastManager.get().send(COMM_SAVE_LOCAL);
-                break;
-            }*/
             case MESSAGE_DIRECTOR_DISCONNECTING: {
                 if (VERBOSE) Log.w(TAG, "MESSAGE_DIRECTOR_DISCONNECTING");
                 EventBus.getDefault().post(new DirectorDisconnect());
                 streamOpen = false;
-                break;
-            }
-            case MESSAGE_REQUEST_VIDEO: {
-                if (VERBOSE) Log.w(TAG, "MESSAGE_REQUEST_VIDEO");
-                processMessageRequestVideo();
                 break;
             }
             case MESSAGE_GET_NEXT_VIDEO_PART: {
@@ -120,12 +98,6 @@ public class ChatManagerAssistant extends ChatManager {
                 processMessageGetNextVideoPart();
                 break;
             }
-       /*     case MESSAGE_ABORT_VIDEO_SENDING: {
-                if (VERBOSE) Log.w(TAG, "get MESSAGE_ABORT_VIDEO_SENDING");
-                processMessageAbortVideoSending();
-                BroadcastManager.get().send(COMM_ABORT_VIDEO_SENDING);
-                break;
-            }*/
 
             case MESSAGE_INIT_MEDIA_SOCKETS: {
                 if (VERBOSE) Log.w(TAG, "get MESSAGE_INIT_MEDIA_SOCKETS");
@@ -144,17 +116,6 @@ public class ChatManagerAssistant extends ChatManager {
                 break;
             }
 
-           /* case MESSAGE_CHAT_MESSAGE: {
-                if (VERBOSE) Log.w(TAG, "get MESSAGE_CHAT");
-                BroadcastManager.get().sendString(COMM_CHAT_MESSAGE, iStream.readUTF());
-                break;
-            }*/
-        }
-    }
-    private void processMessageAbortVideoSending() {
-        if (videoFilePartReader != null) {
-            videoFilePartReader.abort();
-            videoFilePartReader = null;
         }
     }
 
@@ -169,9 +130,6 @@ public class ChatManagerAssistant extends ChatManager {
         }
     }
 
-    private void processMessageRequestVideo() {
-       // TODO BroadcastManager.get().send(COMM_REQUEST_VIDEO);
-    }
 
     public void sendVideoHader(String recordedVideoPath) {
         File recordedVideo = new File(recordedVideoPath);

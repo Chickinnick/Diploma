@@ -112,7 +112,6 @@ public class VideoFilePartReader {
 
             if (totalProgress == videoFileLength) {
                 showSuccessDialog();
-          //  TODO    BroadcastManager.get().send(COMM_RESUME_GOPRO_STREAMING);
             } else {
                 showAbortDialog();
             }

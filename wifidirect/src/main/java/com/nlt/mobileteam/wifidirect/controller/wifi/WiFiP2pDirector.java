@@ -16,7 +16,6 @@ import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
 import com.nlt.mobileteam.wifidirect.controller.socket.AbstractGroupOwnerSocketHandler;
-import com.nlt.mobileteam.wifidirect.controller.socket.DDPGroupSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.DirectorSocketHandlerType;
 import com.nlt.mobileteam.wifidirect.controller.socket.GroupOwnerSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.SocketHandler;
@@ -140,15 +139,12 @@ public class WiFiP2pDirector {
      * Initializes instance of {@link AbstractGroupOwnerSocketHandler}.<br>
      * If we are using regular CinaMaker director - {@link GroupOwnerSocketHandler}
      * will be initialised. <br>
-     * If we are using DDP director - then {@link DDPGroupSocketHandler}
      */
     private void setupSocketHandler() {
         AbstractGroupOwnerSocketHandler serverSocketHandler;
         if (WifiDirectCore.cameraSessionInstanceCode == InstanceCode.DIRECTOR) {
             serverSocketHandler = SocketHandler.getServer(DirectorSocketHandlerType.CINAMAKER_DIRECTOR);
-        } else if (WifiDirectCore.cameraSessionInstanceCode == InstanceCode.DIRECTOR_DDP) {
-            serverSocketHandler = SocketHandler.getServer(DirectorSocketHandlerType.DDP_DIRECTOR);
-        } else {
+        }  else {
             throw new SetupSocketHandlerException("Wrong WifiDirectCore.cameraSessionInstanceCode");
         }
         CommunicationController.get().setServerSocketHandler(serverSocketHandler);

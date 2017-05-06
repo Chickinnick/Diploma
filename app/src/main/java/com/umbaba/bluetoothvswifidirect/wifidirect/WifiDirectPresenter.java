@@ -11,6 +11,7 @@ import com.nlt.mobileteam.wifidirect.model.InstanceCode;
 import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorConnect;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
+import com.nlt.mobileteam.wifidirect.model.event.assistant.OwnerName;
 import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
 import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
@@ -103,11 +104,16 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
         AssistantActionListener actionListener = new AssistantActionListener() {
             @Override
             public void directorConnected(DirectorConnect event) {
-                view.setDeviceName(event.getDeviceName());
             }
 
             @Override
             public void directorDisconnected(DirectorDisconnect event) {
+
+            }
+
+            @Override
+            public void ownerName(OwnerName event) {
+                view.setDeviceName(event.getOwnerName());
 
             }
         };

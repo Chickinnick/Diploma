@@ -20,8 +20,6 @@ public abstract class SocketHandler extends Thread {
         switch (handlerType) {
             case CINAMAKER_DIRECTOR:
                 return new GroupOwnerSocketHandler();
-            case DDP_DIRECTOR:
-                return new DDPGroupSocketHandler();
             default:
                 throw new IllegalArgumentException("wrong handlerType: " +handlerType);
         }

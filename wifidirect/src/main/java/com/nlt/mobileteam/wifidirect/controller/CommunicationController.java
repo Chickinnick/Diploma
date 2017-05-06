@@ -168,7 +168,7 @@ public class CommunicationController {
         if (VERBOSE)
             Log.i(TAG, "addPingPongChatManager, pingPongChatManager " + pingPongChatManager);
         int index = pingPongManagers.add(pingPongChatManager);
-        //TODO: quick fix, refactor this class - move all managers to Device and operate with device instead of separate manager!!!
+        //HACK: quick fix, refactor this class - move all managers to Device and operate with device instead of separate manager!!!
         //quick fix - Just to be sure index to insert contains empty
         // communicator, DO NOT DELETE until refactoring!!!
         ChatManager messageChatManager = chatManagers.remove(index);
