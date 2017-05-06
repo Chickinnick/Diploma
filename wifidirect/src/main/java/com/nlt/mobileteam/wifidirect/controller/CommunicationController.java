@@ -12,10 +12,12 @@ import com.nlt.mobileteam.wifidirect.controller.chat.MediaManager;
 import com.nlt.mobileteam.wifidirect.controller.socket.AbstractGroupOwnerSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.ClientSocketHandler;
 import com.nlt.mobileteam.wifidirect.controller.socket.SocketHandler;
+import com.nlt.mobileteam.wifidirect.model.event.director.AssistantDisconnect;
 import com.nlt.mobileteam.wifidirect.utils.Callback;
 import com.nlt.mobileteam.wifidirect.utils.SocketUtil;
 import com.nlt.mobileteam.wifidirect.utils.exception.MessageControllerException;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.net.Socket;
@@ -402,7 +404,7 @@ public class CommunicationController {
             }
 
             if (sendDisconnectingMassage) {
-              //TODO  BroadcastManager.get().sendInt(COMM_ASSISTANT_DISCONNECTING, index + 1);
+                EventBus.getDefault().post(new AssistantDisconnect(index + 1));
             }
         } else {
             throw new IllegalArgumentException("Wrong index to remove, index = " + index);

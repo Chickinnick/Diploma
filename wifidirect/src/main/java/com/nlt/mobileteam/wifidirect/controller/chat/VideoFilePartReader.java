@@ -3,7 +3,12 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 import android.util.Log;
 import com.nlt.mobileteam.wifidirect.R;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.utils.exception.VideoFilePartReaderException;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -118,33 +123,17 @@ public class VideoFilePartReader {
         }
 
         private void showAbortDialog() {
-          /*TODO  BroadcastManager
-                    .get()
-                    .sendStringAndInt(
-                            Action.COMM_UPDATE_DIALOG,
-                            WifiDirectCore.getAppContext()
-                                    .getString(R.string.dialog_video_sent_abort),
-                            DIALOG_ABORT);*/
+            EventBus.getDefault().post(new Abort());
+
         }
 
         private void showSuccessDialog() {
-     /*       BroadcastManager
-                    .get()
-                    .sendStringAndInt(
-                            Action.COMM_UPDATE_DIALOG,
-                            WifiDirectCore.getAppContext()
-                                    .getString(R.string.dialog_video_sent_success),
-                            DIALOG_SUCCESS);*/
+
+            EventBus.getDefault().post(new Success());
         }
 
         private void showInformDialog() {
-          /*  BroadcastManager
-                    .get()
-                    .sendStringAndInt(
-                            Action.COMM_UPDATE_DIALOG,
-                            WifiDirectCore.getAppContext()
-                                    .getString(R.string.dialog_sending_video),
-                            DIALOG_INFORM);*/
+            EventBus.getDefault().post(new Progress());
         }
     }
 

@@ -2,10 +2,15 @@ package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
 
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
+import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.utils.FileUtils;
 import com.nlt.mobileteam.wifidirect.R;
 import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.utils.exception.VideoFilePartReceiverException;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,7 +28,6 @@ import java.util.concurrent.TimeUnit;
  * the output stream closes automatically.
  *
  * Also the class manages UI progress bar by itself.
- * @see VideoFilePartWriter.Writer#startProgressBar()
  * @see VideoFilePartWriter.Writer#updateProgressBar()
  * @see VideoFilePartWriter.Writer#finishProgressBar()
  * @see VideoFilePartWriter.Writer#abortProgressBar()
@@ -87,7 +91,6 @@ public class VideoFilePartWriter {
         @Override
         public void run() {
 
-            startProgressBar();
 
             try (FileOutputStream fos = new FileOutputStream(video)) {
                 while (totalProgress < videoFileLength && !isInterrupted()) {
@@ -123,40 +126,19 @@ public class VideoFilePartWriter {
         }
 
         private void finishProgressBar() {
-          /*  BroadcastManager
-                    .get()
-                    .sendStringAndInt(
-                            Action.COMM_PROJECT_VIDEO_RECEIVED,
-                            video.getPath(),
-                            deviceIndex);*/
+            EventBus.getDefault().post(new Success());
         }
 
         private void abortProgressBar() {
-           /* TODO BroadcastManager
-                    .get()
-                    .sendInt(
-                            Action.COMM_PROJECT_VIDEO_RECEIVE_ABORTED,
-                            deviceIndex);
-        */}
+            EventBus.getDefault().post(new Abort(deviceIndex));
+        }
 
         private void updateProgressBar() {
-            /*BroadcastManager
-                    .get()
-                    .sendSerializable(
-                            Action.COMM_PROJ_PART_RECEIVED,
-                            new VideoReceivingProgress(
-                                    videoFileLength,
-                                    totalProgress,
-                                    deviceIndex, null));*/
+            EventBus.getDefault().post(new Progress(
+                    videoFileLength,
+                    totalProgress,
+                    deviceIndex));
         }
 
-        private void startProgressBar() {
-      /*      BroadcastManager
-                    .get()
-                    .sendStringAndInt(
-                            Action.COMM_SET_PROGRESS_STATUS,
-                            WifiDirectCore.getAppContext().getResources().getString(R.string.receiving),
-                            deviceIndex);*/
-        }
     }
 }
