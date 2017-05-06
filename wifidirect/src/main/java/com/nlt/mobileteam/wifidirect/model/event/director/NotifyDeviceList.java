@@ -10,16 +10,7 @@ import java.util.List;
 public class NotifyDeviceList {
 
 
-    private DeviceList deviceList;
-
     public NotifyDeviceList() {
     }
 
-    public NotifyDeviceList(DeviceList deviceList) {
-        this.deviceList = deviceList;
-    }
-
-    public DeviceList getDeviceList() {
-        return deviceList;
-    }
 }

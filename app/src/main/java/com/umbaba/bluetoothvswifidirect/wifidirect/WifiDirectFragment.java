@@ -177,6 +177,7 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     @Override
     public void setDevices(DeviceList devices) {
         adapter.clear();
+
         List<WiFiP2pService> trimList = devices.getTrimList();
         if (trimList == null) return;
         for (WiFiP2pService wiFiP2pService : trimList) {

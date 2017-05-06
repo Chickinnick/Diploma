@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.nlt.mobileteam.wifidirect.WifiDirect;
+import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
 import com.nlt.mobileteam.wifidirect.listeners.AssistantActionListener;
 import com.nlt.mobileteam.wifidirect.listeners.DirectorActionListener;
 import com.nlt.mobileteam.wifidirect.listeners.TransferingActionListener;
@@ -89,7 +90,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
         DirectorActionListener actionListener = new DirectorActionListener() {
             @Override
             public void handleDeviceList(NotifyDeviceList event) {
-                devices = event.getDeviceList();
+                devices = WiFiP2pDirector.get().getDevices();
                 if (devices == null) {
                     view.refreshDevices();
                 } else {
@@ -106,6 +107,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
         AssistantActionListener actionListener = new AssistantActionListener() {
             @Override
             public void directorConnected(DirectorConnect event) {
+
             }
 
             @Override
