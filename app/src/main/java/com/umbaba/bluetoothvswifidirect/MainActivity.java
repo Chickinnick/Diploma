@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -33,6 +34,8 @@ import java.io.File;
 import java.util.List;
 
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.BLE_FILE_SEND;
+import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.CHOOSE_SERVER_REQUEST;
+import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.SCAN_REQUEST;
 
 public class MainActivity extends FragmentActivity {
     private static final String TAG = "MainActivity";
@@ -120,8 +123,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BLE_FILE_SEND) {
-            Toast.makeText(this, "file sent!", Toast.LENGTH_SHORT).show();
+        if(requestCode == SCAN_REQUEST || requestCode == CHOOSE_SERVER_REQUEST) {
+            bluetoothPresenter.handleActivityResult(requestCode, resultCode , data);
         }
     };
 

@@ -41,5 +41,9 @@ public interface BluetoothContract {
         void itemSelected(int position);
 
         void sendFile(int size);
+
+        void startAsServer();
+
+        void connectToServer();
     }
 }

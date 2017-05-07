@@ -4,7 +4,13 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.devpaul.bluetoothutillib.SimpleBluetooth;
+import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
+import com.devpaul.bluetoothutillib.utils.BluetoothUtility;
+import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
@@ -12,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 /**
@@ -29,6 +36,12 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private final ComparationModel comparationModel;
     private Activity activity;
     private List<BluetoothDevice> devices = new ArrayList<>();
+    boolean isConnected;
+
+    public static final int SCAN_REQUEST = 119;
+    public static final int CHOOSE_SERVER_REQUEST = 120;
+    private SimpleBluetooth simpleBluetooth;
+    private String curMacAddress;
 
 
     public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
@@ -45,12 +58,35 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     @Override
     public void start() {
+        if(simpleBluetooth == null) {
+            simpleBluetooth = new SimpleBluetooth(activity, new SimpleBluetoothListener() {
+                @Override
+                public void onBluetoothDataReceived(byte[] bytes, String data) {
+                    isConnected = false;
+                    Log.w("SIMPLEBT", "Data received");
+                }
 
+                @Override
+                public void onDeviceConnected(BluetoothDevice device) {
+
+                    isConnected = true;
+                }
+
+                @Override
+                public void onDeviceDisconnected(BluetoothDevice device) {
+                    // device was disconnected so connect it again?
+
+                }
+            });
+        }
+        simpleBluetooth.initializeSimpleBluetooth();
+        simpleBluetooth.setInputStreamType(BluetoothUtility.InputStreamType.BUFFERED);
 
     }
 
     @Override
     public void stop() {
+        simpleBluetooth.endSimpleBluetooth();
     }
 
     @Override
@@ -60,22 +96,44 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
 
     @Override
-    public void sendFile(int size) {
-        File file = fileModel.getFile(size);
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("*/*");
-        sharingIntent.setPackage("com.android.bluetooth");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+    public void startAsServer() {
+        simpleBluetooth.createBluetoothServerConnection();
 
-//        starttime = System.currentTimeMillis();
-//        fileSize = Long.valueOf(file.length());
-        activity.startActivityForResult(
-                Intent.createChooser(sharingIntent, "Share file"),
-                BLE_FILE_SEND);
+    }
+
+    @Override
+    public void connectToServer() {
+        if(curMacAddress != null) {
+            simpleBluetooth.connectToBluetoothServer(curMacAddress);
+        } else {
+            simpleBluetooth.scan(CHOOSE_SERVER_REQUEST);
+        }
+    }
+
+    @Override
+    public void sendFile(int size) {
+
     }
 
     @Override
     public List<BluetoothDevice> getDevices() {
         return devices;
+    }
+
+    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+
+            curMacAddress = data.getStringExtra(DeviceDialog.DEVICE_DIALOG_DEVICE_ADDRESS_EXTRA);
+            boolean paired = simpleBluetooth.getBluetoothUtility()
+                    .checkIfPaired(simpleBluetooth.getBluetoothUtility()
+                            .findDeviceByMacAddress(curMacAddress));
+            String message = paired ? "is paired" : "is not paired";
+            Log.i("ActivityResult", "Device " + message);
+            if(requestCode == SCAN_REQUEST) {
+                simpleBluetooth.connectToBluetoothDevice(curMacAddress);
+            } else {
+                simpleBluetooth.connectToBluetoothServer(curMacAddress);
+            }
+        }
     }
 }

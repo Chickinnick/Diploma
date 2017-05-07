@@ -33,8 +33,9 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     private static final String TAG = "BluetoothFragment";
     private Button start;
     private Button stop;
-    private RecyclerView recyclerView;
+    private Button connectToServer;
 
+    private RecyclerView recyclerView;
     private BluetoothContract.Presenter mPresenter;
     private RVAdapter adapter;
     private LinearLayout sendGroup;
@@ -74,8 +75,9 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
                              Bundle savedInstanceState) {
 
         View inflate = inflater.inflate(R.layout.fragment_bluetooth, container, false);
-        start = (Button) inflate.findViewById(R.id.start);
+        start = (Button) inflate.findViewById(R.id.start_server);
         stop = (Button) inflate.findViewById(R.id.stop);
+        connectToServer = (Button) inflate.findViewById(R.id.connect_to_server);
         sendGroup = (LinearLayout) inflate.findViewById(R.id.send_group);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.result);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -86,19 +88,24 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        mPresenter.start();
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.start();
                 initAdaper();
+                mPresenter.startAsServer();
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.stop();
+            }
+        });
+        connectToServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.connectToServer();
             }
         });
     }
