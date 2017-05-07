@@ -1,1 +1,1 @@
-include ':app', ':wifidirect'
+include ':app', ':wifidirect', ':btutillib'

@@ -47,4 +47,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     testCompile 'junit:junit:4.12'
     compile project(path: ':wifidirect')
+    compile project(':btutillib')
+
 }
