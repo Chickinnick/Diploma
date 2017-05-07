@@ -1,6 +1,5 @@
 package com.umbaba.bluetoothvswifidirect.comparation;
 
-import com.umbaba.bluetoothvswifidirect.BasePresenter;
 import com.umbaba.bluetoothvswifidirect.BaseView;
 import com.umbaba.bluetoothvswifidirect.data.comparation.Criteria;
 
@@ -17,7 +16,7 @@ public interface ComparationContract {
 
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter  {
 
         void loadCriterion();
     }

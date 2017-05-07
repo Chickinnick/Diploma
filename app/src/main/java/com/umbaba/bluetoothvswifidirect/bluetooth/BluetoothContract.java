@@ -2,7 +2,6 @@ package com.umbaba.bluetoothvswifidirect.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 
-import com.umbaba.bluetoothvswifidirect.BasePresenter;
 import com.umbaba.bluetoothvswifidirect.BaseView;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public interface BluetoothContract {
         void addDevices(Set<BluetoothDevice> bluetoothDevices);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter  {
 
         void start();
 

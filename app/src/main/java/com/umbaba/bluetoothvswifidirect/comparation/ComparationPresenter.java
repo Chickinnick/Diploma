@@ -20,11 +20,8 @@ public class ComparationPresenter implements ComparationContract.Presenter {
         this.view = view;
         this.comparationModel = comparationModel;
         this.view.setPresenter(this);
-    }
 
-    @Override
-    public void subscribe() {
-        loadCriterion();
+//        loadCriterion();
     }
 
     public void loadCriterion() {
@@ -33,10 +30,6 @@ public class ComparationPresenter implements ComparationContract.Presenter {
         view.showCriterion(criterion);
     }
 
-    @Override
-    public void unsubscribe() {
-
-    }
 
 
 }
