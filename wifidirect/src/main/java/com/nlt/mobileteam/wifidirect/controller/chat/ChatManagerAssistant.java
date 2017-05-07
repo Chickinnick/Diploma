@@ -132,13 +132,7 @@ public class ChatManagerAssistant extends ChatManager {
 
 
     public void sendVideoHader(File file) {
-        if (!file.exists()) {
-            if (VERBOSE)
-                Log.e(TAG, "recorded file with name doesn't exists. exiting: " + file.getPath());
-            return;
-        }
-
-        if (VERBOSE) Log.w(TAG, "video File length: " + file.length());
+      Log.w(TAG, "video File length: " + file.length());
         videoFilePartReader = new VideoFilePartReader(file);
 
         write(MESSAGE_HEADER_SENDING_VIDEO, file.length());

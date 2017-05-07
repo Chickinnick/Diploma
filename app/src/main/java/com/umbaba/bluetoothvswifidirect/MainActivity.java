@@ -1,14 +1,22 @@
 package com.umbaba.bluetoothvswifidirect;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothFragment;
 import com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
@@ -21,10 +29,13 @@ import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
 import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectFragment;
 import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectPresenter;
 
+import java.io.File;
+import java.util.List;
+
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.BLE_FILE_SEND;
 
 public class MainActivity extends FragmentActivity {
-
+    private static final String TAG = "MainActivity";
     private Button testWifi;
     private Button testBluetooth;
 
@@ -38,9 +49,23 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         setupComparation();
         initMainFlow();
-        testFileModel = new DefaultFileData();
+        testFileModel = new DefaultFileData(getResources());
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE).
+                withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                    }
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {}
+                }).check();
+
     }
 
     private void initMainFlow() {
