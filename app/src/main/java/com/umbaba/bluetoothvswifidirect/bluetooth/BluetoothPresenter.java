@@ -14,7 +14,12 @@ import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +68,12 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 @Override
                 public void onBluetoothDataReceived(byte[] bytes, String data) {
                     isConnected = false;
-                    Log.w("SIMPLEBT", "Data received");
+                    Log.i(TAG, "onBluetoothDataReceived:"+ data +"b:  "+ bytes);
                 }
 
                 @Override
                 public void onDeviceConnected(BluetoothDevice device) {
-
+                    view.enableSend();
                     isConnected = true;
                 }
 
@@ -98,7 +103,6 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     @Override
     public void startAsServer() {
         simpleBluetooth.createBluetoothServerConnection();
-
     }
 
     @Override
@@ -112,7 +116,21 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     @Override
     public void sendFile(int size) {
-
+        File file = fileModel.getFile(size);
+        byte bytes[] = new byte[(int) file.length()];
+        BufferedInputStream bis = null;
+        try {
+            bis = new BufferedInputStream(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        DataInputStream dis = new DataInputStream(bis);
+        try {
+            dis.readFully(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        simpleBluetooth.sendData(bytes);
     }
 
     @Override
@@ -122,7 +140,6 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
-
             curMacAddress = data.getStringExtra(DeviceDialog.DEVICE_DIALOG_DEVICE_ADDRESS_EXTRA);
             boolean paired = simpleBluetooth.getBluetoothUtility()
                     .checkIfPaired(simpleBluetooth.getBluetoothUtility()
