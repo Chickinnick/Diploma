@@ -34,10 +34,8 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     private Button startAssistant;
     private Button startDirector;
     private Button stop;
-    private RecyclerView recyclerView;
 
     private WifiDirectContract.Presenter mPresenter;
-    private RVAdapter adapter;
     private LinearLayout sendGroup;
 
     public WifiDirectFragment() {
@@ -80,8 +78,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
         startDirector = (Button) inflate.findViewById(R.id.start_director);
         stop = (Button) inflate.findViewById(R.id.stop);
         sendGroup = (LinearLayout) inflate.findViewById(R.id.send_group);
-        recyclerView = (RecyclerView) inflate.findViewById(R.id.result);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return inflate;
     }
 
@@ -98,7 +94,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
                 startAssistant.setVisibility(View.GONE);
                 stop.setVisibility(View.VISIBLE);
                 mPresenter.startAssistant();
-                initAdaper();
             }
         });
         startDirector.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +103,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
                 startAssistant.setVisibility(View.GONE);
                 stop.setVisibility(View.VISIBLE);
                 mPresenter.startDirector();
-                initAdaper();
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
@@ -119,30 +113,6 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
         });
     }
 
-    private void initAdaper() {
-        adapter = new RVAdapter();
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void discoverStarted() {
-
-    }
-
-
-    @Override
-    public void discoverFinished() {
-    }
-
-    @Override
-    public void stateOn() {
-
-    }
-
-    @Override
-    public void stateOff() {
-
-    }
 
     @Override
     public void onDestroy() {
@@ -174,101 +144,11 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
         sendGroup.findViewById(R.id.btn20mb).setOnClickListener(onClickListener);
     }
 
-    @Override
-    public void setDevices(DeviceList devices) {
-        adapter.clear();
-
-        List<WiFiP2pService> trimList = devices.getTrimList();
-        if (trimList == null) return;
-        for (WiFiP2pService wiFiP2pService : trimList) {
-            String instanceName = wiFiP2pService.instanceName;
-            adapter.add(instanceName);
-            Log.i(TAG, "addDevice: " + instanceName);
-        }
-
-    }
-
-    @Override
-    public void refreshDevices() {
-        adapter.notifyDataSetChanged();
-    }
 
     @Override
     public void setDeviceName(String deviceName) {
         stop.setText(deviceName);
     }
 
-    public static class RVAdapter extends RecyclerView.Adapter<WifiDirectFragment.RVAdapter.BluetoothViewHolder> {
-        private OnItemClickListener onItemClickListener;
-
-
-        List<String> devices;
-
-        public RVAdapter() {
-            this.devices = new ArrayList<>();
-        }
-
-        @Override
-        public WifiDirectFragment.RVAdapter.BluetoothViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_bluetooth, parent, false);
-            return new WifiDirectFragment.RVAdapter.BluetoothViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(WifiDirectFragment.RVAdapter.BluetoothViewHolder holder, int position) {
-            String device = devices.get(position);
-            holder.device.setText(device);
-            holder.bindListener(position, onItemClickListener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return devices.size();
-        }
-
-        public void setData(List<String> data) {
-            this.devices = data;
-        }
-
-        public void add(String device) {
-            this.devices.add(device);
-            notifyDataSetChanged();
-        }
-
-        public void clear() {
-            devices.clear();
-        }
-
-        public class BluetoothViewHolder extends RecyclerView.ViewHolder {
-
-            TextView device;
-
-            BluetoothViewHolder(View itemView) {
-                super(itemView);
-                device = (TextView) itemView.findViewById(R.id.device);
-            }
-
-
-            public void bindListener(final int position, final OnItemClickListener onItemClickListener) {
-                device.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onItemClickListener != null) {
-                            onItemClickListener.onItemClicked(position, v);
-                        }
-                    }
-                });
-            }
-        }
-
-        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
-
-        public interface OnItemClickListener {
-            void onItemClicked(int position, View view);
-        }
-    }
 }
 

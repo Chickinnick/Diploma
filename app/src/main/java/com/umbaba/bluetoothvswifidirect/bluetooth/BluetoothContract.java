@@ -14,31 +14,19 @@ import java.util.Set;
 public interface BluetoothContract {
     interface View extends BaseView<Presenter> {
 
-
-        void addDevice(BluetoothDevice bluetoothDevice);
-
-        void discoverStarted();
-
-        void discoverFinished();
-
-        void stateOn();
-
-        void stateOff();
+        void setDeviceName(String name);
 
         void enableSend();
 
-        void addDevices(Set<BluetoothDevice> bluetoothDevices);
     }
 
     interface Presenter  {
 
         void start();
 
-        List<BluetoothDevice> getDevices();
 
         void stop();
 
-        void itemSelected(int position);
 
         void sendFile(int size);
 

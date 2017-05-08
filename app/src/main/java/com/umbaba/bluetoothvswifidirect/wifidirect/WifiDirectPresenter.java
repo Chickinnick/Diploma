@@ -33,15 +33,11 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
-    private static final int REQUEST_ENABLE_BT = 1;
-    public static final int BLE_FILE_SEND = 123;
     private final WifiDirectContract.View view;
-
     private static final String TAG = "WifiDirectPresenter";
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
     private Activity activity;
-    private DeviceList devices;
     private WifiDirect wifiDirect;
 
     public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
@@ -58,7 +54,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     }
 
     @Override
-    public void destroy(){
+    public void destroy() {
         wifiDirect.destroy();
     }
 
@@ -82,25 +78,13 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
             }
         };
-        wifiDirect.sendFile(file , transferingActionListener);
+        wifiDirect.sendFile(file, transferingActionListener);
     }
 
     @Override
     public void startDirector() {
-        wifiDirect = WifiDirect.init(activity , InstanceCode.DIRECTOR);
-        DirectorActionListener actionListener = new DirectorActionListener() {
-            @Override
-            public void handleDeviceList(NotifyDeviceList event) {
-                devices = WiFiP2pDirector.get().getDevices();
-                if (devices == null) {
-                    view.refreshDevices();
-                } else {
-                    view.setDevices(devices);
-                }
-            }
-        };
-        wifiDirect.setActionListener(actionListener);
-        wifiDirect.addOnFileTransferListener(new TransferingActionListener(){
+        wifiDirect = WifiDirect.init(activity, InstanceCode.DIRECTOR);
+        wifiDirect.addOnFileTransferListener(new TransferingActionListener() {
             @Override
             public void fileAborted(Abort event) {
                 Log.e(TAG, "fileAborted: " + event.getDeviceIndex());
@@ -120,7 +104,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
     @Override
     public void startAssistant() {
-        wifiDirect = WifiDirect.init(activity , InstanceCode.ASSISTANT);
+        wifiDirect = WifiDirect.init(activity, InstanceCode.ASSISTANT);
         AssistantActionListener actionListener = new AssistantActionListener() {
             @Override
             public void directorConnected(DirectorConnect event) {
@@ -139,10 +123,5 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             }
         };
         wifiDirect.setActionListener(actionListener);
-    }
-
-    @Override
-    public List<WiFiP2pService> getDevices() {
-        return devices.getTrimList();
     }
 }

@@ -17,33 +17,16 @@ import java.util.Set;
 public interface WifiDirectContract {
     interface View extends BaseView<Presenter> {
 
-
-        void discoverStarted();
-
-        void discoverFinished();
-
-        void stateOn();
-
-        void stateOff();
-
         void enableSend();
-
-        void setDevices(DeviceList devices);
-
-        void refreshDevices();
 
         void setDeviceName(String deviceName);
     }
 
     interface Presenter {
 
-
-        List<WiFiP2pService> getDevices();
-
         void pause();
 
         void destroy();
-
 
         void sendFile(int size);
 

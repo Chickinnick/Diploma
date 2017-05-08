@@ -1,28 +1,18 @@
 package com.umbaba.bluetoothvswifidirect.bluetooth;
 
 
-import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
@@ -35,9 +25,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     private Button stop;
     private Button connectToServer;
 
-    private RecyclerView recyclerView;
     private BluetoothContract.Presenter mPresenter;
-    private RVAdapter adapter;
     private LinearLayout sendGroup;
 
     public BluetoothFragment() {
@@ -79,8 +67,6 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         stop = (Button) inflate.findViewById(R.id.stop);
         connectToServer = (Button) inflate.findViewById(R.id.connect_to_server);
         sendGroup = (LinearLayout) inflate.findViewById(R.id.send_group);
-        recyclerView = (RecyclerView) inflate.findViewById(R.id.result);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return inflate;
     }
 
@@ -92,7 +78,6 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initAdaper();
                 mPresenter.startAsServer();
             }
         });
@@ -110,47 +95,10 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         });
     }
 
-    private void initAdaper() {
-        adapter = new RVAdapter();
-        adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int position, View view) {
-                mPresenter.itemSelected(position);
-            }
-        });
-        recyclerView.setAdapter(adapter);
-    }
 
     @Override
-    public void discoverStarted() {
-        start.setText(R.string.button_searching);
-    }
+    public void setDeviceName(String name) {
 
-    @Override
-    public void addDevices(Set<BluetoothDevice> bluetoothDevices) {
-        if (adapter == null) {
-            return;
-        }
-
-        adapter.clear();
-        for (BluetoothDevice bluetoothDevice : bluetoothDevices) {
-            adapter.add(bluetoothDevice.getName());
-        }
-    }
-
-    @Override
-    public void discoverFinished() {
-        start.setText(R.string.button_restart);
-    }
-
-    @Override
-    public void stateOn() {
-        start.setBackgroundColor(getResources().getColor(R.color.colorActive));
-    }
-
-    @Override
-    public void stateOff() {
-        start.setBackgroundColor(getResources().getColor(R.color.colorInactive));
     }
 
     @Override
@@ -177,89 +125,6 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         sendGroup.findViewById(R.id.btn20mb).setOnClickListener(onClickListener);
     }
 
-    @Override
-    public void addDevice(BluetoothDevice device) {
-        String deviceName;
-        deviceName = device.getAddress();
-        if (!TextUtils.isEmpty(device.getName())) {
-            deviceName += " " + device.getName();
-        }
-        Log.i(TAG, "addDevice: " + deviceName);
-        adapter.add(deviceName);
-    }
 
-
-    public static class RVAdapter extends RecyclerView.Adapter<BluetoothFragment.RVAdapter.BluetoothViewHolder> {
-        private OnItemClickListener onItemClickListener;
-
-
-        List<String> devices;
-
-        public RVAdapter() {
-            this.devices = new ArrayList<>();
-        }
-
-        @Override
-        public BluetoothFragment.RVAdapter.BluetoothViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_bluetooth, parent, false);
-            return new BluetoothFragment.RVAdapter.BluetoothViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(BluetoothFragment.RVAdapter.BluetoothViewHolder holder, int position) {
-            String device = devices.get(position);
-            holder.device.setText(device);
-            holder.bindListener(position, onItemClickListener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return devices.size();
-        }
-
-        public void setData(List<String> data) {
-            this.devices = data;
-        }
-
-        public void add(String device) {
-            this.devices.add(device);
-            notifyDataSetChanged();
-        }
-
-        public void clear() {
-            devices.clear();
-        }
-
-        public class BluetoothViewHolder extends RecyclerView.ViewHolder {
-
-            TextView device;
-
-            BluetoothViewHolder(View itemView) {
-                super(itemView);
-                device = (TextView) itemView.findViewById(R.id.device);
-            }
-
-
-            public void bindListener(final int position, final OnItemClickListener onItemClickListener) {
-                device.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onItemClickListener != null) {
-                            onItemClickListener.onItemClicked(position, v);
-                        }
-                    }
-                });
-            }
-        }
-
-        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
-
-        public interface OnItemClickListener {
-            void onItemClicked(int position, View view);
-        }
-    }
 }
 
