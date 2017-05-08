@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.umbaba.bluetoothvswifidirect.R;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
@@ -27,6 +28,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
 
     private BluetoothContract.Presenter mPresenter;
     private LinearLayout sendGroup;
+    private TextView ownerName;
 
     public BluetoothFragment() {
 
@@ -66,6 +68,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         start = (Button) inflate.findViewById(R.id.start_server);
         stop = (Button) inflate.findViewById(R.id.stop);
         connectToServer = (Button) inflate.findViewById(R.id.connect_to_server);
+        ownerName = (TextView) inflate.findViewById(R.id.owner_name);
         sendGroup = (LinearLayout) inflate.findViewById(R.id.send_group);
         return inflate;
     }
@@ -98,7 +101,7 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
 
     @Override
     public void setDeviceName(String name) {
-
+        ownerName.setText(name);
     }
 
     @Override

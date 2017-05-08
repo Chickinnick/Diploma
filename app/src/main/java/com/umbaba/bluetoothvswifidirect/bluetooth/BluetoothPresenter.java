@@ -40,7 +40,6 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
     private Activity activity;
-    private List<BluetoothDevice> devices = new ArrayList<>();
     boolean isConnected;
 
     public static final int SCAN_REQUEST = 119;
@@ -73,6 +72,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
                 @Override
                 public void onDeviceConnected(BluetoothDevice device) {
+                    view.setDeviceName(device.getName() + " / "+ device.getAddress());
                     view.enableSend();
                     isConnected = true;
                 }
@@ -92,11 +92,6 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     @Override
     public void stop() {
         simpleBluetooth.endSimpleBluetooth();
-    }
-
-    @Override
-    public void itemSelected(int position) {
-        view.enableSend();
     }
 
 
@@ -131,11 +126,6 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
             e.printStackTrace();
         }
         simpleBluetooth.sendData(bytes);
-    }
-
-    @Override
-    public List<BluetoothDevice> getDevices() {
-        return devices;
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
