@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.SCAN
 public class MainActivity extends FragmentActivity {
     private static final String TAG = "MainActivity";
     private Button testWifi;
+    private LinearLayout navigationBottomLayout;
     private Button testBluetooth;
 
     private ComparationPresenter comparationPresenter;
@@ -73,11 +75,13 @@ public class MainActivity extends FragmentActivity {
 
     private void initMainFlow() {
         testBluetooth = (Button) findViewById(R.id.test_bluetooth_btn);
+        navigationBottomLayout = (LinearLayout) findViewById(R.id.navigation_btns);
         testWifi = (Button) findViewById(R.id.test_wifi_btn);
         testBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBluetoothTest();
+                navigationBottomLayout.setVisibility(View.GONE);
             }
         });
 
@@ -85,6 +89,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 showWifiTest();
+                navigationBottomLayout.setVisibility(View.GONE);
             }
         });
     }
