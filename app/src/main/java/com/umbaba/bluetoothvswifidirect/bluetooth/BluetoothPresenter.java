@@ -112,20 +112,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     @Override
     public void sendFile(int size) {
         File file = fileModel.getFile(size);
-        byte bytes[] = new byte[(int) file.length()];
-        BufferedInputStream bis = null;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        DataInputStream dis = new DataInputStream(bis);
-        try {
-            dis.readFully(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        simpleBluetooth.sendData(bytes);
+        simpleBluetooth.sendData(file);
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {

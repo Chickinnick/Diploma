@@ -16,7 +16,11 @@ import android.util.Log;
 import com.devpaul.bluetoothutillib.errordialogs.InvalidMacAddressDialog;
 import com.devpaul.bluetoothutillib.handlers.BluetoothHandler;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -458,6 +462,26 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
         }
     }
 
+
+
+    public void sendData(File file) {
+        if(bluetoothSocket != null) {
+            if(bluetoothSocket.isConnected()){
+                if(connectedThread != null) {
+                    connectedThread.write(file);
+                } else {
+                    Log.d("BluetoothUtility", "Connected Thread is null");
+                }
+            } else {
+                Log.d("BluetoothUtility", "Socket is not connected.");
+            }
+        } else {
+            Log.d("BluetoothUtility", "Socket is null");
+        }
+    }
+
+
+
     /**
      * Sends a byte array of data to the connected bluetooth device.
      * @param data the data to send.
@@ -818,6 +842,23 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
             try {
                 mmSocket.close();
             } catch (IOException e) { }
+        }
+
+        public void write(File file) {
+            InputStream in = null;
+            byte[] bytes = new byte[1024 * 1024];
+            int progress = 0;
+            while (progress < file.length()) {
+                int read = 0;
+                try {
+                    in = new BufferedInputStream(new FileInputStream(file));
+                    read = in.read(bytes);
+                    mOutputStream.write(bytes, 0, read);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                progress += read;
+            }
         }
     }
 
