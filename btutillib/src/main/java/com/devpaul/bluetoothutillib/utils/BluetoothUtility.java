@@ -688,14 +688,15 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
                 // Connect the device through the socket. This will block
                 // until it succeeds or throws an exception
                 mmSocket.connect();
-            } catch (IOException connectException) {
+            } catch (final IOException connectException) {
                 // Unable to connect; close the socket and get out
+                connectException.printStackTrace();
                 if(mContext instanceof Activity) {
                     ((Activity)mContext).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if(shouldShowSnackbars) {
-                                Snackbar.make(((Activity)mContext).findViewById(android.R.id.content), "Device not available.",
+                                Snackbar.make(((Activity)mContext).findViewById(android.R.id.content), "Device not available." ,
                                         Snackbar.LENGTH_SHORT).show();
                             }
                         }

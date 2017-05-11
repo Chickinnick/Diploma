@@ -83,10 +83,9 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
                 }
             });
+            simpleBluetooth.makeDiscoverable(60000);
         }
         simpleBluetooth.initializeSimpleBluetooth();
-        simpleBluetooth.setInputStreamType(BluetoothUtility.InputStreamType.BUFFERED);
-
     }
 
     @Override
