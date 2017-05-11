@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     tools:context="com.umbaba.bluetoothvswifidirect.MainActivity">
 
     <FrameLayout
@@ -11,6 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/navigation_btns" />
+
+    <at.grabner.circleprogress.CircleProgressView
+        android:layout_centerInParent="true"
+        android:id="@+id/circleView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        CircleProgressView:cpv_autoTextSize="true"
+        CircleProgressView:cpv_barColor="@color/colorPrimary"
+        CircleProgressView:cpv_barWidth="35dp"
+        CircleProgressView:cpv_maxValue="100"
+        CircleProgressView:cpv_rimColor="@color/colorInactive"
+        CircleProgressView:cpv_rimWidth="35dp"
+        CircleProgressView:cpv_seekMode="true"
+        CircleProgressView:cpv_spinColor="@color/colorPrimary"
+        CircleProgressView:cpv_textColor="@color/colorPrimaryDark"
+        CircleProgressView:cpv_value="10" />
+
+
 
     <LinearLayout
         android:id="@+id/navigation_btns"

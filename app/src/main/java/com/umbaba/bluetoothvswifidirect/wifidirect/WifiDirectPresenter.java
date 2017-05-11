@@ -28,6 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.List;
 
+import at.grabner.circleprogress.CircleProgressView;
+
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 
@@ -37,15 +39,17 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     private static final String TAG = "WifiDirectPresenter";
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
+    private CircleProgressView circleProgressView;
     private Activity activity;
     private WifiDirect wifiDirect;
 
-    public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
+    public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationModel comparationModel, CircleProgressView circleProgressView) {
         this.activity = activity;
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
         this.comparationModel = comparationModel;
+        this.circleProgressView = circleProgressView;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
             @Override
             public void doInProgress(Progress progress) {
-
+                circleProgressView.setValue(progress.totalProgress);
             }
 
             @Override

@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 
+import com.devpaul.bluetoothutillib.SimpleBluetooth;
 import com.devpaul.bluetoothutillib.errordialogs.InvalidMacAddressDialog;
 import com.devpaul.bluetoothutillib.handlers.BluetoothHandler;
 
@@ -466,11 +467,11 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
 
 
 
-    public void sendData(File file) {
+    public void sendData(File file, SimpleBluetooth.OnProgressUpdateListener onProgressUpdateListener) {
         if(bluetoothSocket != null) {
             if(bluetoothSocket.isConnected()){
                 if(connectedThread != null) {
-                    connectedThread.write(file);
+                    connectedThread.write(file, onProgressUpdateListener);
                 } else {
                     Log.d("BluetoothUtility", "Connected Thread is null");
                 }
@@ -852,7 +853,7 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
             } catch (IOException e) { }
         }
 
-        public void write(File file) {
+        public void write(File file, SimpleBluetooth.OnProgressUpdateListener onProgressUpdateListener) {
             InputStream in = null;
             byte[] bytes = new byte[1024 * 1024];
             int progress = 0;
@@ -866,7 +867,14 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
                     e.printStackTrace();
                 }
                 progress += read;
+                if (onProgressUpdateListener != null) {
+                    onProgressUpdateListener.onProgressUpdate(calcProgress(progress , file.length()));
+                }
             }
+        }
+
+        private int calcProgress(int progress, long totalLen) {
+            return (int) (progress * 100 / (double) totalLen);
         }
     }
 

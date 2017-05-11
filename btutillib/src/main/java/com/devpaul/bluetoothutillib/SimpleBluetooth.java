@@ -275,8 +275,8 @@ public class SimpleBluetooth {
     }
 
 
-    public void sendData(File file) {
-        bluetoothUtility.sendData(file);
+    public void sendData(File file, OnProgressUpdateListener onProgressUpdateListener) {
+        bluetoothUtility.sendData(file , onProgressUpdateListener);
     }
 
     /**
@@ -411,12 +411,17 @@ public class SimpleBluetooth {
         bluetoothUtility.closeConnections();
     }
 
+
     /**
      * Gets the used bluetooth utility.
      * @return the {@code BluetoothUtility}
      */
     public BluetoothUtility getBluetoothUtility() {
         return this.bluetoothUtility;
+    }
+
+    public interface OnProgressUpdateListener {
+        void onProgressUpdate(int progress);
     }
 
 }

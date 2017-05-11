@@ -7,7 +7,7 @@ package com.nlt.mobileteam.wifidirect.model.event.transfer;
 public class Progress {
 
     private long videoFileLength;
-    private long totalProgress;
+    public long totalProgress;
     private int deviceIndex;
 
     public Progress() {

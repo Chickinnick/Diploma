@@ -34,6 +34,8 @@ import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectPresenter;
 import java.io.File;
 import java.util.List;
 
+import at.grabner.circleprogress.CircleProgressView;
+
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.BLE_FILE_SEND;
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.CHOOSE_SERVER_REQUEST;
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.SCAN_REQUEST;
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentActivity {
     private Button testWifi;
     private LinearLayout navigationBottomLayout;
     private Button testBluetooth;
+    private CircleProgressView circleProgressView;
 
     private ComparationPresenter comparationPresenter;
     private TestFileModel testFileModel;
@@ -75,6 +78,7 @@ public class MainActivity extends FragmentActivity {
 
     private void initMainFlow() {
         testBluetooth = (Button) findViewById(R.id.test_bluetooth_btn);
+        circleProgressView = (CircleProgressView) findViewById(R.id.circleView);
         navigationBottomLayout = (LinearLayout) findViewById(R.id.navigation_btns);
         testWifi = (Button) findViewById(R.id.test_wifi_btn);
         testBluetooth.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +105,7 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
-        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationModel);
+        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationModel , circleProgressView);
 
     }
     private void showWifiTest() {
@@ -111,7 +115,7 @@ public class MainActivity extends FragmentActivity {
             wifiDirectFragment = WifiDirectFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), wifiDirectFragment, R.id.contentFrame);
         }
-        wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationModel);
+        wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationModel, circleProgressView);
 
     }
 

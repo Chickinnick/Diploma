@@ -3,25 +3,17 @@ package com.umbaba.bluetoothvswifidirect.bluetooth;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.devpaul.bluetoothutillib.SimpleBluetooth;
 import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
-import com.devpaul.bluetoothutillib.utils.BluetoothUtility;
 import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import at.grabner.circleprogress.CircleProgressView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
@@ -39,6 +31,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private static final String TAG = "BluetoothPresenter";
     private final TestFileModel fileModel;
     private final ComparationModel comparationModel;
+    private final CircleProgressView circleProgressView;
     private Activity activity;
     boolean isConnected;
 
@@ -48,10 +41,9 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private String curMacAddress;
 
 
-    public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel) {
-
+    public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel, CircleProgressView circleProgressView) {
         this.activity = activity;
-
+        this.circleProgressView = circleProgressView;
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
@@ -111,7 +103,12 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     @Override
     public void sendFile(int size) {
         File file = fileModel.getFile(size);
-        simpleBluetooth.sendData(file);
+        simpleBluetooth.sendData(file , new SimpleBluetooth.OnProgressUpdateListener() {
+            @Override
+            public void onProgressUpdate(int progress) {
+                circleProgressView.setValue(progress);
+            }
+        });
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {

@@ -128,6 +128,5 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
         sendGroup.findViewById(R.id.btn20mb).setOnClickListener(onClickListener);
     }
 
-
 }
 
