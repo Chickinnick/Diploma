@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 
@@ -21,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -756,7 +758,7 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
         }
 
         public void run() {
-            byte[] buffer = new byte[1024]; // buffer store for the stream
+            byte[] buffer = new byte[1024 * 1024]; // buffer store for the stream
             int bytes; // bytes returned from read()
             BufferedReader reader;
 
@@ -765,10 +767,15 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
                 while (true) {
                     try {
                         // Read from the InputStream
-                        bytes = mInputStream.read(buffer);
+                        int read;
+                        OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory()+ File.separator + "5mb");
+                        while((read = mInputStream.read(buffer)) != -1){
+                            output.write(buffer, 0, read);
+                        }
+
                         // Send the obtained bytes to the UI activity
                         //order is what, arg1, arg2, obj
-                        bluetoothHandler.obtainMessage(BluetoothHandler.MESSAGE_READ, bytes, -1, buffer)
+                        bluetoothHandler.obtainMessage(BluetoothHandler.MESSAGE_READ, read, -1, buffer)
                                 .sendToTarget();
                     } catch (IOException e) {
                         break;
