@@ -853,24 +853,36 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
             } catch (IOException e) { }
         }
 
-        public void write(File file, SimpleBluetooth.OnProgressUpdateListener onProgressUpdateListener) {
-            InputStream in = null;
-            byte[] bytes = new byte[1024 * 1024];
-            int progress = 0;
-            while (progress < file.length()) {
-                int read = 0;
-                try {
-                    in = new BufferedInputStream(new FileInputStream(file));
-                    read = in.read(bytes);
-                    mOutputStream.write(bytes, 0, read);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        public void write(final File file, final SimpleBluetooth.OnProgressUpdateListener onProgressUpdateListener) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    InputStream in = null;
+                    byte[] bytes = new byte[1024 * 1024];
+                    int progress = 0;
+                    while (progress < file.length()) {
+                        int read = 0;
+                        try {
+                            in = new BufferedInputStream(new FileInputStream(file));
+                            read = in.read(bytes);
+                            mOutputStream.write(bytes, 0, read);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        progress += read;
+                        Log.i(TAG, "write: progress:" + progress);
+                        final int finalProgress = progress;
+                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onProgressUpdateListener != null) {
+                                    onProgressUpdateListener.onProgressUpdate(calcProgress(finalProgress, file.length()));
+                                }
+                            }
+                        });
+                    }
                 }
-                progress += read;
-                if (onProgressUpdateListener != null) {
-                    onProgressUpdateListener.onProgressUpdate(calcProgress(progress , file.length()));
-                }
-            }
+            }).start();
         }
 
         private int calcProgress(int progress, long totalLen) {
