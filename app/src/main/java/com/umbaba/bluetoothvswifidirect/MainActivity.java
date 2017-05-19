@@ -49,7 +49,6 @@ public class MainActivity extends FragmentActivity {
 
     private ComparationPresenter comparationPresenter;
     private TestFileModel testFileModel;
-    private ComparationModel comparationModel;
     private WifiDirectPresenter wifiDirectPresenter;
     private BluetoothPresenter bluetoothPresenter;
 
@@ -103,7 +102,7 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
-        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationModel , circleProgressView);
+        bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationPresenter , circleProgressView);
 
     }
     private void showWifiTest() {
@@ -113,7 +112,7 @@ public class MainActivity extends FragmentActivity {
             wifiDirectFragment = WifiDirectFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), wifiDirectFragment, R.id.contentFrame);
         }
-        wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationModel, circleProgressView);
+        wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationPresenter, circleProgressView);
 
     }
 
@@ -124,8 +123,7 @@ public class MainActivity extends FragmentActivity {
             comparationFragment = ComparationFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
         }
-        comparationModel = new ComparationRepository(getApplicationContext());
-        comparationPresenter = new ComparationPresenter(comparationFragment, comparationModel);
+        comparationPresenter = new ComparationPresenter(this, comparationFragment);
     }
 
     @Override

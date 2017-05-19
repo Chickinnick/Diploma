@@ -19,5 +19,9 @@ public interface ComparationContract {
     interface Presenter  {
 
         void loadCriterion();
+
+        void startTransfer(int size);
+
+        void stopTransfer(long fileLength);
     }
 }

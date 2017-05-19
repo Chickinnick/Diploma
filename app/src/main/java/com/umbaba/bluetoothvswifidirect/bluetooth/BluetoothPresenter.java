@@ -9,6 +9,7 @@ import android.view.View;
 import com.devpaul.bluetoothutillib.SimpleBluetooth;
 import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
 import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
+import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
@@ -31,7 +32,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
     private static final String TAG = "BluetoothPresenter";
     private final TestFileModel fileModel;
-    private final ComparationModel comparationModel;
+    private final ComparationPresenter comparationPresenter;
     private final CircleProgressView circleProgressView;
     private Activity activity;
     boolean isConnected;
@@ -42,13 +43,13 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private String curMacAddress;
 
 
-    public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationModel comparationModel, CircleProgressView circleProgressView) {
+    public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationPresenter comparationPresenter, CircleProgressView circleProgressView) {
         this.activity = activity;
         this.circleProgressView = circleProgressView;
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
-        this.comparationModel = comparationModel;
+        this.comparationPresenter = comparationPresenter;
     }
 
 
@@ -105,6 +106,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     public void sendFile(final int size) {
         File file = fileModel.getFile(size);
         circleProgressView.setVisibility(View.VISIBLE);
+        comparationPresenter.startTransfer(size);
         simpleBluetooth.sendData(file , new SimpleBluetooth.OnProgressUpdateListener() {
             @Override
             public void onProgressUpdate(int progress) {
@@ -115,6 +117,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
             public void onTransferSuccess(long fileLength) {
                 circleProgressView.setVisibility(View.GONE);
                 view.setSuccessedTransfer(size);
+                comparationPresenter.stopTransfer(fileLength);
             }
         });
     }

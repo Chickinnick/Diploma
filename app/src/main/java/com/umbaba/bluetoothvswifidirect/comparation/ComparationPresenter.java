@@ -1,6 +1,9 @@
 package com.umbaba.bluetoothvswifidirect.comparation;
 
+import android.content.Context;
+
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
+import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
 import com.umbaba.bluetoothvswifidirect.data.comparation.Criteria;
 
 import java.util.List;
@@ -11,17 +14,17 @@ import java.util.List;
 
 public class ComparationPresenter implements ComparationContract.Presenter {
 
+    private Context context;
     private final ComparationContract.View view;
     private final ComparationModel comparationModel;
 
 
 
-    public ComparationPresenter(ComparationContract.View view, ComparationModel comparationModel) {
+    public ComparationPresenter(Context context , ComparationContract.View view) {
+        this.context = context;
         this.view = view;
-        this.comparationModel = comparationModel;
+        this.comparationModel = new ComparationRepository(context);
         this.view.setPresenter(this);
-
-//        loadCriterion();
     }
 
     public void loadCriterion() {
@@ -30,6 +33,15 @@ public class ComparationPresenter implements ComparationContract.Presenter {
         view.showCriterion(criterion);
     }
 
+    @Override
+    public void startTransfer(int size) {
+
+    }
+
+    @Override
+    public void stopTransfer(long fileLength) {
+
+    }
 
 
 }
