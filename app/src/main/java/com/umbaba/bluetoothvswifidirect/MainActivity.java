@@ -86,7 +86,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 showBluetoothTest();
-                navigationBottomLayout.setVisibility(View .GONE);
+
             }
         });
 
@@ -94,7 +94,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 showWifiTest();
-                navigationBottomLayout.setVisibility(View.GONE);
+
             }
         });
     }
@@ -129,6 +129,7 @@ public class MainActivity extends FragmentActivity {
         wifiDirectPresenter.setOnWorkFinishedCallback(new OnWorkFinishedCallback() {
             @Override
             public void onWorkFinished() {
+                wifiDirectPresenter.destroy();
                 showComparationView();
                 comparationPresenter.loadCriterion();
             }

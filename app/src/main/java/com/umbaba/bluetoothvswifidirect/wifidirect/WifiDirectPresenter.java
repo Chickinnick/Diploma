@@ -76,6 +76,9 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     @Override
     public void sendFile(final int size) {
         final File file = fileModel.getFile(size);
+
+        circleProgressView.setVisibility(View.VISIBLE);
+        comparationPresenter.startTransfer(size, 12);
         TransferingActionListener transferingActionListener = new TransferingActionListener() {
             @Override
             public void fileAborted(Abort event) {
