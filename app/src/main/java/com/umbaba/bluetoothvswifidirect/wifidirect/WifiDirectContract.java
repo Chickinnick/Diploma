@@ -20,6 +20,8 @@ public interface WifiDirectContract {
         void enableSend();
 
         void setDeviceName(String deviceName);
+
+        void setSuccessedTransfer(int size);
     }
 
     interface Presenter {

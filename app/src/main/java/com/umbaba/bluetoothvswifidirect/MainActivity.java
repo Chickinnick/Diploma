@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
 import com.umbaba.bluetoothvswifidirect.testdata.DefaultFileData;
+import com.umbaba.bluetoothvswifidirect.testdata.FakeFileData;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 import com.umbaba.bluetoothvswifidirect.util.ActivityUtils;
 import com.umbaba.bluetoothvswifidirect.wifidirect.WifiDirectFragment;
@@ -59,7 +61,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         setupComparation();
         initMainFlow();
-        testFileModel = new DefaultFileData(getResources());
+        testFileModel = new FakeFileData(getResources());
+//        testFileModel = new DefaultFileData(getResources());
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -123,17 +126,29 @@ public class MainActivity extends FragmentActivity {
         }
         comparationPresenter.start(ComparationContract.Presenter.TYPE_WIFI);
         wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationPresenter, circleProgressView);
-
+        wifiDirectPresenter.setOnWorkFinishedCallback(new OnWorkFinishedCallback() {
+            @Override
+            public void onWorkFinished() {
+                showComparationView();
+                comparationPresenter.loadCriterion();
+            }
+        });
     }
 
     private void setupComparation() {
+        ComparationFragment comparationFragment = showComparationView();
+        comparationPresenter = new ComparationPresenter(this, comparationFragment);
+    }
+
+    @NonNull
+    private ComparationFragment showComparationView() {
         ComparationFragment comparationFragment =
                 (ComparationFragment) getSupportFragmentManager().findFragmentById(ComparationFragment.ID);
         if (comparationFragment == null) {
             comparationFragment = ComparationFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
         }
-        comparationPresenter = new ComparationPresenter(this, comparationFragment);
+        return comparationFragment;
     }
 
     @Override

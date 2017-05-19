@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 
 import com.nlt.mobileteam.wifidirect.WifiDirect;
 import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
@@ -20,6 +21,7 @@ import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.utils.DeviceList;
+import com.umbaba.bluetoothvswifidirect.OnWorkFinishedCallback;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
@@ -32,23 +34,32 @@ import java.util.List;
 import at.grabner.circleprogress.CircleProgressView;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import static com.umbaba.bluetoothvswifidirect.OnWorkFinishedCallback.MAX_TESTS;
 
 
 public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
     private final WifiDirectContract.View view;
+    private ComparationPresenter comparationPresenter;
     private static final String TAG = "WifiDirectPresenter";
     private final TestFileModel fileModel;
     private CircleProgressView circleProgressView;
     private Activity activity;
     private WifiDirect wifiDirect;
 
+    int testsCounter = -1;
+
+    private OnWorkFinishedCallback onWorkFinishedCallback;
+
     public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationPresenter comparationPresenter, CircleProgressView circleProgressView) {
         this.activity = activity;
         this.view = checkNotNull(view);
+        this.comparationPresenter = comparationPresenter;
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
         this.circleProgressView = circleProgressView;
+        testsCounter = 0;
+
     }
 
     @Override
@@ -63,8 +74,8 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
 
     @Override
-    public void sendFile(int size) {
-        File file = fileModel.getFile(size);
+    public void sendFile(final int size) {
+        final File file = fileModel.getFile(size);
         TransferingActionListener transferingActionListener = new TransferingActionListener() {
             @Override
             public void fileAborted(Abort event) {
@@ -78,10 +89,22 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
             @Override
             public void onSuccessed(Success event) {
-
+                circleProgressView.setVisibility(View.GONE);
+                view.setSuccessedTransfer(size);
+                comparationPresenter.stopTransfer(file.length());
+                testsCounter++;
+                checkTestFinish();
             }
         };
         wifiDirect.sendFile(file, transferingActionListener);
+    }
+
+    private void checkTestFinish() {
+        if(testsCounter >= MAX_TESTS){
+            if (onWorkFinishedCallback != null) {
+                onWorkFinishedCallback.onWorkFinished();
+            }
+        }
     }
 
     @Override
@@ -126,5 +149,9 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
             }
         };
         wifiDirect.setActionListener(actionListener);
+    }
+
+    public void setOnWorkFinishedCallback(OnWorkFinishedCallback onWorkFinishedCallback) {
+        this.onWorkFinishedCallback = onWorkFinishedCallback;
     }
 }

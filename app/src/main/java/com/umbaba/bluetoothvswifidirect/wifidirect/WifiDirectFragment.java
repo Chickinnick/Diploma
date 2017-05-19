@@ -35,6 +35,10 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
     private Button startDirector;
     private Button stop;
 
+    private View btn5Mb;
+    private View btn10mb;
+    private View btn20mb;
+
     private WifiDirectContract.Presenter mPresenter;
     private LinearLayout sendGroup;
 
@@ -137,17 +141,37 @@ public class WifiDirectFragment extends Fragment implements WifiDirectContract.V
                         mPresenter.sendFile(TestFileModel.FILE_20);
                         break;
                 }
+                view.setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
+
             }
         };
-        sendGroup.findViewById(R.id.btn5mb).setOnClickListener(onClickListener);
-        sendGroup.findViewById(R.id.btn10mb).setOnClickListener(onClickListener);
-        sendGroup.findViewById(R.id.btn20mb).setOnClickListener(onClickListener);
+        btn5Mb = sendGroup.findViewById(R.id.btn5mb);
+        btn5Mb.setOnClickListener(onClickListener);
+        btn10mb = sendGroup.findViewById(R.id.btn10mb);
+        btn10mb.setOnClickListener(onClickListener);
+        btn20mb = sendGroup.findViewById(R.id.btn20mb);
+        btn20mb.setOnClickListener(onClickListener);
     }
 
 
     @Override
     public void setDeviceName(String deviceName) {
         stop.setText(deviceName);
+    }
+
+    @Override
+    public void setSuccessedTransfer(int size) {
+        switch (size) {
+            case TestFileModel.FILE_5:
+                btn5Mb.setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_green_dark));
+                break;
+            case TestFileModel.FILE_10:
+                btn10mb.setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_green_dark));
+                break;
+            case TestFileModel.FILE_20:
+                btn20mb.setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_green_dark));
+                break;
+        }
     }
 
 }
