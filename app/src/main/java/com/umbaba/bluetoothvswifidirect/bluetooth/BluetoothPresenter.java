@@ -9,8 +9,8 @@ import android.view.View;
 import com.devpaul.bluetoothutillib.SimpleBluetooth;
 import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
 import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
+import com.umbaba.bluetoothvswifidirect.OnWorkFinishedCallback;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
-import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
 import java.io.File;
@@ -19,6 +19,7 @@ import at.grabner.circleprogress.CircleProgressView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import static com.umbaba.bluetoothvswifidirect.OnWorkFinishedCallback.MAX_TESTS;
 
 /**
  * Created by Nick on 17.04.2017.
@@ -42,6 +43,8 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     private SimpleBluetooth simpleBluetooth;
     private String curMacAddress;
 
+    int testsCounter = -1;
+    private OnWorkFinishedCallback onWorkFinishedCallback;
 
     public BluetoothPresenter(Activity activity, BluetoothContract.View view, TestFileModel testFileModel, ComparationPresenter comparationPresenter, CircleProgressView circleProgressView) {
         this.activity = activity;
@@ -50,6 +53,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
         this.comparationPresenter = comparationPresenter;
+        testsCounter = 0;
     }
 
 
@@ -106,7 +110,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     public void sendFile(final int size) {
         File file = fileModel.getFile(size);
         circleProgressView.setVisibility(View.VISIBLE);
-        comparationPresenter.startTransfer(size);
+        comparationPresenter.startTransfer(size, 12);
         simpleBluetooth.sendData(file , new SimpleBluetooth.OnProgressUpdateListener() {
             @Override
             public void onProgressUpdate(int progress) {
@@ -118,9 +122,21 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 circleProgressView.setVisibility(View.GONE);
                 view.setSuccessedTransfer(size);
                 comparationPresenter.stopTransfer(fileLength);
+                testsCounter++;
+                checkTestFinish();
             }
         });
     }
+
+    private void checkTestFinish() {
+        if(testsCounter >= MAX_TESTS){
+            if (onWorkFinishedCallback != null) {
+                onWorkFinishedCallback.onWorkFinished();
+            }
+        }
+    }
+
+
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
@@ -136,5 +152,9 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
                 simpleBluetooth.connectToBluetoothServer(curMacAddress);
             }
         }
+    }
+
+    public void setOnWorkFinishedCallback(OnWorkFinishedCallback onWorkFinishedCallback) {
+        this.onWorkFinishedCallback = onWorkFinishedCallback;
     }
 }

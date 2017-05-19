@@ -20,6 +20,7 @@ import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
 import com.nlt.mobileteam.wifidirect.utils.DeviceList;
+import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
@@ -38,17 +39,15 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
     private final WifiDirectContract.View view;
     private static final String TAG = "WifiDirectPresenter";
     private final TestFileModel fileModel;
-    private final ComparationModel comparationModel;
     private CircleProgressView circleProgressView;
     private Activity activity;
     private WifiDirect wifiDirect;
 
-    public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationModel comparationModel, CircleProgressView circleProgressView) {
+    public WifiDirectPresenter(Activity activity, WifiDirectContract.View view, TestFileModel testFileModel, ComparationPresenter comparationPresenter, CircleProgressView circleProgressView) {
         this.activity = activity;
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
         this.fileModel = testFileModel;
-        this.comparationModel = comparationModel;
         this.circleProgressView = circleProgressView;
     }
 

@@ -18,10 +18,17 @@ public interface ComparationContract {
 
     interface Presenter  {
 
+        int TYPE_BLUETOOTH = 0;
+        int TYPE_WIFI = 1;
+
+        void start(int state);
+
         void loadCriterion();
 
-        void startTransfer(int size);
+        void startTransfer(int size, int distance);
 
         void stopTransfer(long fileLength);
+
+        void commitChanges();
     }
 }

@@ -21,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothFragment;
 import com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter;
+import com.umbaba.bluetoothvswifidirect.comparation.ComparationContract;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationFragment;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
@@ -102,7 +103,15 @@ public class MainActivity extends FragmentActivity {
             bluetoothFragment = BluetoothFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), bluetoothFragment, R.id.contentFrame);
         }
+        comparationPresenter.start(ComparationContract.Presenter.TYPE_BLUETOOTH);
         bluetoothPresenter = new BluetoothPresenter(this, bluetoothFragment, testFileModel, comparationPresenter , circleProgressView);
+        bluetoothPresenter.setOnWorkFinishedCallback(new OnWorkFinishedCallback() {
+            @Override
+            public void onWorkFinished() {
+                bluetoothPresenter.stop();
+                showWifiTest();
+            }
+        });
 
     }
     private void showWifiTest() {
@@ -112,6 +121,7 @@ public class MainActivity extends FragmentActivity {
             wifiDirectFragment = WifiDirectFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), wifiDirectFragment, R.id.contentFrame);
         }
+        comparationPresenter.start(ComparationContract.Presenter.TYPE_WIFI);
         wifiDirectPresenter = new WifiDirectPresenter(this, wifiDirectFragment, testFileModel, comparationPresenter, circleProgressView);
 
     }

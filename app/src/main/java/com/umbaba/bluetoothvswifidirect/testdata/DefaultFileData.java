@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static android.R.attr.path;
+import static android.R.attr.readPermission;
 
 public class DefaultFileData implements TestFileModel {
 
