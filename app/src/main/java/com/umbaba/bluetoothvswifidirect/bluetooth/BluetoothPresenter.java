@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 
 import com.devpaul.bluetoothutillib.SimpleBluetooth;
 import com.devpaul.bluetoothutillib.dialogs.DeviceDialog;
@@ -101,12 +102,19 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     }
 
     @Override
-    public void sendFile(int size) {
+    public void sendFile(final int size) {
         File file = fileModel.getFile(size);
+        circleProgressView.setVisibility(View.VISIBLE);
         simpleBluetooth.sendData(file , new SimpleBluetooth.OnProgressUpdateListener() {
             @Override
             public void onProgressUpdate(int progress) {
                 circleProgressView.setValue(progress);
+            }
+
+            @Override
+            public void onTransferSuccess(long fileLength) {
+                circleProgressView.setVisibility(View.GONE);
+                view.setSuccessedTransfer(size);
             }
         });
     }

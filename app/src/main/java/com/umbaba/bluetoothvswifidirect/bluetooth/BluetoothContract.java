@@ -18,6 +18,7 @@ public interface BluetoothContract {
 
         void enableSend();
 
+        void setSuccessedTransfer(int size);
     }
 
     interface Presenter  {

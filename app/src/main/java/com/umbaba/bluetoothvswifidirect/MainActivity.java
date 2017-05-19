@@ -57,8 +57,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         setupComparation();
         initMainFlow();
         testFileModel = new DefaultFileData(getResources());
@@ -85,7 +83,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 showBluetoothTest();
-                navigationBottomLayout.setVisibility(View.GONE);
+                navigationBottomLayout.setVisibility(View .GONE);
             }
         });
 

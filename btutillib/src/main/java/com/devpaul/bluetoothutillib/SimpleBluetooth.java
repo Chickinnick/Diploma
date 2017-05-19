@@ -422,6 +422,8 @@ public class SimpleBluetooth {
 
     public interface OnProgressUpdateListener {
         void onProgressUpdate(int progress);
+
+        void onTransferSuccess(long fileLength);
     }
 
 }

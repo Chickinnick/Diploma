@@ -15,6 +15,7 @@
 
     <at.grabner.circleprogress.CircleProgressView
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:id="@+id/circleView"
         android:layout_width="200dp"
         android:layout_height="200dp"
