@@ -71,7 +71,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     public void commitChanges() {
         for (int i = 0; i < MAX_FILES_SENT; i++) {
             MeasurementData blMeasdata = bluetoothMeasurementData.get(i);
-            MeasurementData wifiMeasdata = bluetoothMeasurementData.get(i);
+            MeasurementData wifiMeasdata = wifiMeasurementData.get(i);
             comparationModel.addCriterion(Criteria.prepareFromData(blMeasdata, wifiMeasdata));
         }
         releaseTempData();

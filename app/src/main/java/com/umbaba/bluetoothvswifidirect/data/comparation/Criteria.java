@@ -1,6 +1,8 @@
 package com.umbaba.bluetoothvswifidirect.data.comparation;
 
 
+import java.util.concurrent.TimeUnit;
+
 public class Criteria {
 
    private String title;
@@ -29,6 +31,14 @@ public class Criteria {
     }
 
     public static Criteria prepareFromData(MeasurementData blMeasdata, MeasurementData wifiMeasdata) {
-        return new Criteria(blMeasdata.getTestdataTitle(), String.valueOf(blMeasdata.getSpeed()), String.valueOf(wifiMeasdata.getSpeed()));
+        double bluetoothSpeed = blMeasdata.getSpeed();
+        double wifiSpeed = wifiMeasdata.getSpeed();
+
+        return new Criteria(blMeasdata.getTestdataTitle(), getSpeedValueString(bluetoothSpeed), getSpeedValueString(wifiSpeed));
     }
+
+    private static String getSpeedValueString(double wifiSpeed) {
+        return wifiSpeed + "MBps";
+    }
+
 }

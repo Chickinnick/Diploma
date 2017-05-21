@@ -1,6 +1,7 @@
 package com.umbaba.bluetoothvswifidirect.comparation;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.CollapsibleActionView;
 import android.support.v7.widget.CardView;
@@ -56,11 +57,20 @@ public class ComparationFragment extends Fragment implements ComparationContract
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         adapter = new RVAdapter(new ArrayList<Criteria>());
         recyclerView.setAdapter(adapter);
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (presenter != null) {
+            presenter.loadCriterion();
+        }
+
+    }
 
     @Override
     public void showCriterion(List<Criteria> criterions) {

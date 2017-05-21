@@ -104,6 +104,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
     private void checkTestFinish() {
         if(testsCounter >= MAX_TESTS){
+            comparationPresenter.commitChanges();
             if (onWorkFinishedCallback != null) {
                 onWorkFinishedCallback.onWorkFinished();
             }

@@ -131,7 +131,6 @@ public class MainActivity extends FragmentActivity {
             public void onWorkFinished() {
                 wifiDirectPresenter.destroy();
                 showComparationView();
-                comparationPresenter.loadCriterion();
             }
         });
     }
