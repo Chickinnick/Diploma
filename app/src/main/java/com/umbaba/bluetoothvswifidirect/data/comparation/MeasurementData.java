@@ -31,7 +31,11 @@ public class MeasurementData implements SpeedMeasurable {
 
     @Override
     public void calcSpeed(long startTime, long endTime) {
-        speedMbPs = fileSizeMb / endTime - startTime;
+        speedMbPs = fileSizeMb / diffInSeconds(startTime, endTime);
+    }
+
+    private float diffInSeconds(long startTime, long endTime) {
+        return endTime - startTime / 1000f;
     }
 
     public String getTestdataTitle() {

@@ -1,6 +1,8 @@
 package com.umbaba.bluetoothvswifidirect.data.comparation;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
 public class Criteria {
@@ -37,8 +39,9 @@ public class Criteria {
         return new Criteria(blMeasdata.getTestdataTitle(), getSpeedValueString(bluetoothSpeed), getSpeedValueString(wifiSpeed));
     }
 
-    private static String getSpeedValueString(double wifiSpeed) {
-        return wifiSpeed + "MBps";
+    public static String getSpeedValueString(double wifiSpeed) {
+        double doubleValue = new BigDecimal(wifiSpeed).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return doubleValue + "MBps";
     }
 
 }
