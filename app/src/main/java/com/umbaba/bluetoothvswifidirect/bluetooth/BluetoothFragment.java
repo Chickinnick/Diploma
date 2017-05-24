@@ -80,7 +80,6 @@ public class BluetoothFragment extends Fragment implements BluetoothContract.Vie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.start();
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

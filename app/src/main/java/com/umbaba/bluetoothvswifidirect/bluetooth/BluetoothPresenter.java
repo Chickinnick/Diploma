@@ -51,6 +51,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
         this.circleProgressView = circleProgressView;
         this.view = checkNotNull(view);
         this.view.setPresenter(this);
+        this.start();
         this.fileModel = testFileModel;
         this.comparationPresenter = comparationPresenter;
         testsCounter = 0;
