@@ -54,6 +54,7 @@ public class MainActivity extends FragmentActivity {
     private TestFileModel testFileModel;
     private WifiDirectPresenter wifiDirectPresenter;
     private BluetoothPresenter bluetoothPresenter;
+    private ComparationFragment comparationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +148,7 @@ public class MainActivity extends FragmentActivity {
         if (comparationFragment == null) {
             comparationFragment = ComparationFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
+            comparationFragment.setPresenter(comparationPresenter);
         }
         return comparationFragment;
     }
