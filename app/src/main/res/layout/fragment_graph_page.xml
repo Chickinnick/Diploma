@@ -4,5 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.umbaba.bluetoothvswifidirect.comparation.GraphPageFragment">
 
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/graph" />
 
 </FrameLayout>
