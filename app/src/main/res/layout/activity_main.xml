@@ -7,13 +7,6 @@
     xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     tools:context="com.umbaba.bluetoothvswifidirect.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleTextColor="@android:color/white"
-        android:background="?attr/colorPrimary"/>
     <FrameLayout
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"

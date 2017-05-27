@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +47,7 @@ import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.BLE_
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.CHOOSE_SERVER_REQUEST;
 import static com.umbaba.bluetoothvswifidirect.bluetooth.BluetoothPresenter.SCAN_REQUEST;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button testWifi;
     private LinearLayout navigationBottomLayout;
@@ -57,12 +59,12 @@ public class MainActivity extends FragmentActivity {
     private WifiDirectPresenter wifiDirectPresenter;
     private BluetoothPresenter bluetoothPresenter;
     private ComparationFragment comparationFragment;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setupComparation();
         initMainFlow();
         testFileModel = new FakeFileData(getResources());
@@ -159,7 +161,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -175,9 +177,8 @@ public class MainActivity extends FragmentActivity {
             case R.id.distance_10:
                 distance = 10;
                 break;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        item.setChecked(true);
         comparationPresenter.setCurrentDistance(distance);
         return true;
     }
