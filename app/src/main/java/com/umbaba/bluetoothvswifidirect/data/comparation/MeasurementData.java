@@ -37,8 +37,4 @@ public class MeasurementData implements SpeedMeasurable {
     private float diffInSeconds(long startTime, long endTime) {
         return endTime - startTime / 1000f;
     }
-
-    public String getTestdataTitle() {
-        return "File size:" + fileSizeMb + " \t distance: " + distanceInMeters;
-    }
 }
