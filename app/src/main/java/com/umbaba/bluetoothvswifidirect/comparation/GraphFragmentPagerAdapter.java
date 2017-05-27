@@ -16,7 +16,7 @@ import java.util.Map;
 class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final int PAGE_COUNT = 3;
-    private HashMap<Integer, List<Criteria>> data;
+    private HashMap<Integer, List<Criteria>> data = new HashMap<>();
 
     public GraphFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -42,7 +42,13 @@ class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "distance " + data.get(position).get(0).getDistance();
+        List<Criteria> criterias = data.get(position);
+
+        int distance = 0;
+        if (criterias != null) {Criteria criteria = criterias.get(0);
+            distance = criteria.getDistance();
+        }
+        return "distance " + distance;
     }
 
     public <E extends Object> List<List<E>> split(Collection<E> input, int size) {
@@ -56,8 +62,7 @@ class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
                 master.add(col.subList(startIndex, endIndex));
                 if (endIndex == col.size()) {
                     done = true;
-                }
-                else {
+                } else {
                     startIndex = endIndex;
                     endIndex = col.size() > (endIndex + size) ? (endIndex + size) : col.size();
                 }
@@ -65,7 +70,6 @@ class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
         }
         return master;
     }
-
 
 
 }

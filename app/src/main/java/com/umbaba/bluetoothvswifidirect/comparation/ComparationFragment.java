@@ -24,6 +24,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
     ComparationContract.Presenter presenter;
     private RVAdapter adapter;
     private GraphFragmentPagerAdapter pagerAdapter;
+    private ViewPager graphPager;
 
     public ComparationFragment() {
         // Required empty public constructor
@@ -54,9 +55,10 @@ public class ComparationFragment extends Fragment implements ComparationContract
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
-        ViewPager graphPager = (ViewPager) view.findViewById(R.id.graph_pager);
+        graphPager = (ViewPager) view.findViewById(R.id.graph_pager);
         pagerAdapter = new GraphFragmentPagerAdapter(getActivity().getSupportFragmentManager());
         graphPager.setAdapter(pagerAdapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         adapter = new RVAdapter(new ArrayList<Criteria>());
