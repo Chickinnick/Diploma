@@ -6,15 +6,16 @@
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/graph_pager"
         android:id="@+id/comparation_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/graph_pager"
-        android:layout_below="@+id/comparation_recycler"
+        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="300dp">
         <android.support.v4.view.PagerTitleStrip
             android:id="@+id/pagerTitleStrip"
             android:layout_width="match_parent"
