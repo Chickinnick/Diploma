@@ -25,6 +25,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     List<MeasurementData> bluetoothMeasurementData;
     List<MeasurementData> wifiMeasurementData;
     int state;
+    private int currentDistance;
 
     public ComparationPresenter(Context context, ComparationContract.View view) {
         this.context = context;
@@ -46,8 +47,8 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     }
 
     @Override
-    public void startTransfer(int size, int distanceInMeters) {
-        measurementData = new MeasurementData(size, distanceInMeters);
+    public void startTransfer(int size) {
+        measurementData = new MeasurementData(size, currentDistance);
         startTime = System.currentTimeMillis();
     }
 
@@ -83,4 +84,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     }
 
 
+    public void setCurrentDistance(int currentDistance) {
+        this.currentDistance = currentDistance;
+    }
 }

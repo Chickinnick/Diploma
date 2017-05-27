@@ -1,35 +1,24 @@
 package com.umbaba.bluetoothvswifidirect.wifidirect;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
 import com.nlt.mobileteam.wifidirect.WifiDirect;
-import com.nlt.mobileteam.wifidirect.controller.wifi.WiFiP2pDirector;
 import com.nlt.mobileteam.wifidirect.listeners.AssistantActionListener;
-import com.nlt.mobileteam.wifidirect.listeners.DirectorActionListener;
 import com.nlt.mobileteam.wifidirect.listeners.TransferingActionListener;
 import com.nlt.mobileteam.wifidirect.model.InstanceCode;
-import com.nlt.mobileteam.wifidirect.model.WiFiP2pService;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorConnect;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.DirectorDisconnect;
 import com.nlt.mobileteam.wifidirect.model.event.assistant.OwnerName;
-import com.nlt.mobileteam.wifidirect.model.event.director.NotifyDeviceList;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
-import com.nlt.mobileteam.wifidirect.utils.DeviceList;
 import com.umbaba.bluetoothvswifidirect.OnWorkFinishedCallback;
 import com.umbaba.bluetoothvswifidirect.comparation.ComparationPresenter;
-import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.testdata.TestFileModel;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
-import java.util.List;
 
 import at.grabner.circleprogress.CircleProgressView;
 
@@ -78,7 +67,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
         final File file = fileModel.getFile(size);
 
         circleProgressView.setVisibility(View.VISIBLE);
-        comparationPresenter.startTransfer(size, 12);
+        comparationPresenter.startTransfer(size);
         TransferingActionListener transferingActionListener = new TransferingActionListener() {
             @Override
             public void fileAborted(Abort event) {

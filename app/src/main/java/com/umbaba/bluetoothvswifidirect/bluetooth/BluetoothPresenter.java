@@ -111,7 +111,7 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
     public void sendFile(final int size) {
         File file = fileModel.getFile(size);
         circleProgressView.setVisibility(View.VISIBLE);
-        comparationPresenter.startTransfer(size, 12);
+        comparationPresenter.startTransfer(size);
         simpleBluetooth.sendData(file , new SimpleBluetooth.OnProgressUpdateListener() {
             @Override
             public void onProgressUpdate(int progress) {

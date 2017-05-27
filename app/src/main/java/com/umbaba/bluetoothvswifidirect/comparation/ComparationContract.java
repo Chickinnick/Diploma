@@ -25,7 +25,7 @@ public interface ComparationContract {
 
         void loadCriterion();
 
-        void startTransfer(int size, int distance);
+        void startTransfer(int size);
 
         void stopTransfer(long fileLength);
 

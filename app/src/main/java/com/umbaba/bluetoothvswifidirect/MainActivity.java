@@ -7,6 +7,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -60,6 +62,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         setupComparation();
         initMainFlow();
         testFileModel = new FakeFileData(getResources());
@@ -151,6 +154,32 @@ public class MainActivity extends FragmentActivity {
             comparationFragment.setPresenter(comparationPresenter);
         }
         return comparationFragment;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int distance = 0;
+        switch (item.getItemId()) {
+            case R.id.distance_1:
+                distance = 1;
+                break;
+            case R.id.distance_5:
+                distance = 5;
+                break;
+            case R.id.distance_10:
+                distance = 10;
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        comparationPresenter.setCurrentDistance(distance);
+        return true;
     }
 
     @Override
