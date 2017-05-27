@@ -142,7 +142,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupComparation() {
-        ComparationFragment comparationFragment = showComparationView();
+         comparationFragment = (ComparationFragment) getSupportFragmentManager().findFragmentById(ComparationFragment.ID);
+        if (comparationFragment == null) {
+            comparationFragment = ComparationFragment.newInstance();
+        }
         comparationPresenter = new ComparationPresenter(this, comparationFragment);
     }
 
@@ -153,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         if (comparationFragment == null) {
             comparationFragment = ComparationFragment.newInstance();
             ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
-            comparationFragment.setPresenter(comparationPresenter);
         }
         return comparationFragment;
     }
