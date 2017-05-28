@@ -1,4 +1,4 @@
-package umbaba;
+package com.umbaba.bluetoothvswifidirect.data.comparation;
 
 import com.umbaba.bluetoothvswifidirect.data.comparation.Criteria;
 
@@ -21,7 +21,7 @@ public class CriteriaTest {
     public void getSpeedValueString() throws Exception {
 
         String speedValueString = Criteria.getSpeedValueString(1234.2342);
-        Assert.assertEquals(speedValueString, "1234.23MBps");
+        Assert.assertEquals(speedValueString, "1234.23");
 
     }
 

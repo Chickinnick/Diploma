@@ -17,6 +17,7 @@ class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final int PAGE_COUNT = 3;
     private HashMap<Integer, List<Criteria>> data = new HashMap<>();
+    private List<List<Criteria>> lists;
 
     public GraphFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -29,12 +30,12 @@ class GraphFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return PAGE_COUNT;
+        return 3;
     }
 
 
     public void addData(List<Criteria> criterias) {
-        List<List<Criteria>> lists = split(criterias, 3);
+        lists = split(criterias, 3);
         for (int i = 0; i < lists.size(); i++) {
             data.put(i, lists.get(i));
         }

@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {}
                 }).check();
+        //  showComparationView();
 
     }
 
@@ -149,15 +150,8 @@ public class MainActivity extends AppCompatActivity {
         comparationPresenter = new ComparationPresenter(this, comparationFragment);
     }
 
-    @NonNull
-    private ComparationFragment showComparationView() {
-        ComparationFragment comparationFragment =
-                (ComparationFragment) getSupportFragmentManager().findFragmentById(ComparationFragment.ID);
-        if (comparationFragment == null) {
-            comparationFragment = ComparationFragment.newInstance();
-            ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
-        }
-        return comparationFragment;
+    private void showComparationView() {
+        ActivityUtils.replaceFragmentByID(getSupportFragmentManager(), comparationFragment, R.id.contentFrame);
     }
 
     @Override

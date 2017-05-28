@@ -30,7 +30,9 @@ public class GraphPageFragment extends Fragment {
     public static GraphPageFragment newInstance(List<Criteria>  criteria) {
         GraphPageFragment fragment = new GraphPageFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(CRITERIAS, (ArrayList<? extends Parcelable>) criteria);
+        if (criteria != null) {
+            args.putParcelableArrayList(CRITERIAS, new ArrayList<Parcelable>(criteria));
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,13 +51,27 @@ public class GraphPageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph_page, container, false);
         GraphView graph = (GraphView) view.findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3)
-        });
-        graph.addSeries(series);
+        initGraphData(criteria, graph);
         return view;
+    }
+
+    private void initGraphData(List<Criteria> criterias, GraphView graph) {
+        if (criterias == null) {
+            return;
+        }
+        DataPoint[] blDataPoints = new DataPoint[criterias.size()];
+        DataPoint[] wifiDataPoints = new DataPoint[criterias.size()];
+
+        for (int i = 0; i < criterias.size(); i++) {
+            Criteria criteria = criterias.get(i);
+            int fileLen = criteria.getFileLen();
+            blDataPoints[i] = new DataPoint(fileLen, Double.parseDouble(criteria.getLeft()));
+            wifiDataPoints[i] = new DataPoint(fileLen, Double.parseDouble(criteria.getRight()));
+        }
+        LineGraphSeries<DataPoint> bluetoothSeries = new LineGraphSeries<>(blDataPoints);
+        LineGraphSeries<DataPoint> wifiSeries = new LineGraphSeries<>(wifiDataPoints);
+        graph.addSeries(bluetoothSeries);
+        graph.addSeries(wifiSeries);
     }
 
 }

@@ -65,7 +65,6 @@ public class ComparationPresenter implements ComparationContract.Presenter {
                 bluetoothMeasurementData.add(measurementData);
                 break;
         }
-        measurementData = null;
     }
 
     @Override

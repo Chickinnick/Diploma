@@ -56,8 +56,7 @@ public class ComparationFragment extends Fragment implements ComparationContract
         View view = inflater.inflate(R.layout.fragment_comparation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comparation_recycler);
         graphPager = (ViewPager) view.findViewById(R.id.graph_pager);
-        pagerAdapter = new GraphFragmentPagerAdapter(getActivity().getSupportFragmentManager());
-        graphPager.setAdapter(pagerAdapter);
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -79,8 +78,14 @@ public class ComparationFragment extends Fragment implements ComparationContract
     public void showCriterion(List<Criteria> criterions) {
         adapter.setData(criterions);
         adapter.notifyDataSetChanged();
+        pagerAdapter = new GraphFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+
+
         pagerAdapter.addData(criterions);
+        graphPager.setAdapter(pagerAdapter);
         pagerAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -103,9 +108,11 @@ public class ComparationFragment extends Fragment implements ComparationContract
         @Override
         public void onBindViewHolder(ComparationViewHolder holder, int position) {
             Criteria criteria = criterias.get(position);
-            holder.title.setText(criteria.getFileLen());
-            holder.left.setText(criteria.getLeft());
-            holder.right.setText(criteria.getRight());
+            if (holder != null) {
+                holder.title.setText(criteria.getFileLen() + "mB");
+                holder.left.setText(criteria.getLeft());
+                holder.right.setText(criteria.getRight());
+            }
 
         }
 
