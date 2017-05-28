@@ -65,7 +65,6 @@ public class WifiDirect {
 
         context.unregisterReceiver(wifiStateChangedReceiver);
         disablePeers();
-        EventBus.getDefault().unregister(actionListener);
     }
 
 

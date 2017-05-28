@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onWorkFinished() {
                 wifiDirectPresenter.destroy();
-                showComparationView();
             }
         });
     }
@@ -173,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.distance_10:
                 distance = 10;
                 break;
+            case R.id.end:
+                showComparationView();
+                return true;
         }
         item.setChecked(true);
         comparationPresenter.setCurrentDistance(distance);
