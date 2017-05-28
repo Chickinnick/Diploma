@@ -62,8 +62,6 @@ public class WifiDirect {
         } else if (mInstanceCode == InstanceCode.DIRECTOR) {
             WiFiP2pDirector.get().clearLocalServices();
         }
-
-        context.unregisterReceiver(wifiStateChangedReceiver);
         disablePeers();
     }
 

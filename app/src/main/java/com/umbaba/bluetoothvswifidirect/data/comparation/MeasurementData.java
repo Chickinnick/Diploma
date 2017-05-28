@@ -35,6 +35,6 @@ public class MeasurementData implements SpeedMeasurable {
     }
 
     private float diffInSeconds(long startTime, long endTime) {
-        return endTime - startTime / 1000f;
+        return (endTime - startTime) / 1000f;
     }
 }
