@@ -1,5 +1,6 @@
 package com.nlt.mobileteam.wifidirect.controller.chat;
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.nlt.mobileteam.wifidirect.controller.CommunicationController;
@@ -23,7 +24,7 @@ import static com.nlt.mobileteam.wifidirect.controller.Message.MESSAGE_GET_NEXT_
 public class ChatManagerChief extends ChatManager {
 
     private static final String TAG = ChatManagerChief.class.getSimpleName();
-    private static final boolean VERBOSE = false;
+    private static final boolean VERBOSE = true;
 
     private SyncDevice syncDevice;
     private WiFiP2pService connectedDevice;
@@ -176,7 +177,7 @@ public class ChatManagerChief extends ChatManager {
         if (VERBOSE)
             Log.w(TAG, "file length from ass " + connectedDevice.device.deviceName + " " + videoFileLength);
 
-        File assistantVideo = new File(FileUtils.getFileNameForAssistant(connectedDevice));
+        File assistantVideo = new File(Environment.getExternalStorageDirectory() + File.separator + "wifi");
         videoFilePartWriter = new VideoFilePartWriter(assistantVideo, videoFileLength, connectedDevice.index);
         write(MESSAGE_GET_NEXT_VIDEO_PART);
     }

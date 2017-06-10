@@ -133,8 +133,10 @@ public class ChatManagerAssistant extends ChatManager {
 
     public void sendVideoHader(File file) {
       Log.w(TAG, "video File length: " + file.length());
+        if (!file.exists() || file.length() == 0) {
+                Log.e(TAG, "file with name doesn't exists or empty");
+        }
         videoFilePartReader = new VideoFilePartReader(file);
-
         write(MESSAGE_HEADER_SENDING_VIDEO, file.length());
     }
 

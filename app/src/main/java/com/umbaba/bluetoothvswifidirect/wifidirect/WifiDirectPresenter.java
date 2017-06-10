@@ -80,7 +80,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
             @Override
             public void doInProgress(Progress progress) {
-                circleProgressView.setValue(progress.totalProgress);
+                circleProgressView.setValue(progress.getProgressInPercent());
             }
 
             @Override
@@ -115,7 +115,7 @@ public class WifiDirectPresenter implements WifiDirectContract.Presenter {
 
             @Override
             public void doInProgress(Progress progress) {
-                Log.i(TAG, "doInProgress: " + progress);
+         //       Log.i(TAG, "doInProgress: " + progress);
             }
 
             @Override

@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupComparation();
         initMainFlow();
-        testFileModel = new FakeFileData(getResources());
-//        testFileModel = new DefaultFileData(getResources());
+//        testFileModel = new FakeFileData(getResources());
+        testFileModel = new DefaultFileData(getResources());
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         wifiDirectPresenter.setOnWorkFinishedCallback(new OnWorkFinishedCallback() {
             @Override
             public void onWorkFinished() {
-                wifiDirectPresenter.destroy();
+               // wifiDirectPresenter.destroy();
             }
         });
     }

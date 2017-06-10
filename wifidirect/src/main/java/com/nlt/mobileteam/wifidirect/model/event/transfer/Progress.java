@@ -7,7 +7,7 @@ package com.nlt.mobileteam.wifidirect.model.event.transfer;
 public class Progress {
 
     private long videoFileLength;
-    public long totalProgress;
+    private long totalProgress;
     private int deviceIndex;
 
     public Progress() {
@@ -17,6 +17,10 @@ public class Progress {
         this.videoFileLength = videoFileLength;
         this.totalProgress = totalProgress;
         this.deviceIndex = deviceIndex;
+    }
+
+    public int getProgressInPercent() {
+        return (int) (totalProgress * 100 / (float) videoFileLength);
     }
 
     @Override

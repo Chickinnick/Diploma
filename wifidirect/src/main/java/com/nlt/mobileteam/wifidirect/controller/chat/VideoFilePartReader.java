@@ -1,8 +1,7 @@
 package com.nlt.mobileteam.wifidirect.controller.chat;
 
 import android.util.Log;
-import com.nlt.mobileteam.wifidirect.R;
-import com.nlt.mobileteam.wifidirect.WifiDirectCore;
+
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
@@ -30,7 +29,7 @@ import static com.nlt.mobileteam.wifidirect.controller.chat.ChatManager.MAX_BUFF
  * the input stream closes automatically.
  *
  * Also the class manages UI by itself. Shows "Inform", "Success" and "Abort" dialogs.
- * @see VideoFilePartReader.Reader#showInformDialog()
+ * @see VideoFilePartReader.Reader#updateProgressDialog()
  * @see VideoFilePartReader.Reader#showSuccessDialog()
  * @see VideoFilePartReader.Reader#showAbortDialog()
  * */
@@ -87,7 +86,6 @@ public class VideoFilePartReader {
             long videoFileLength = video.length();
             long totalProgress = 0;
 
-            showInformDialog();
 
             try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(video))) {
 
@@ -103,8 +101,7 @@ public class VideoFilePartReader {
                         Log.w(TAG, "time for waiting is over, break reading");
                         break;
                     }
-
-                    Log.w(TAG, "video part success put into buffer for sending");
+                    updateProgressDialog(videoFileLength, totalProgress);
                 }
 
             } catch (FileNotFoundException e) {
@@ -132,8 +129,11 @@ public class VideoFilePartReader {
             EventBus.getDefault().post(new Success());
         }
 
-        private void showInformDialog() {
-            EventBus.getDefault().post(new Progress());
+        private void updateProgressDialog(long videoFileLength, long totalProgress) {
+            EventBus.getDefault().post(new Progress(
+                    videoFileLength,
+                    totalProgress,
+                    0));
         }
     }
 

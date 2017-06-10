@@ -5,9 +5,6 @@ import android.util.Log;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Abort;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Progress;
 import com.nlt.mobileteam.wifidirect.model.event.transfer.Success;
-import com.nlt.mobileteam.wifidirect.utils.FileUtils;
-import com.nlt.mobileteam.wifidirect.R;
-import com.nlt.mobileteam.wifidirect.WifiDirectCore;
 import com.nlt.mobileteam.wifidirect.utils.exception.VideoFilePartReceiverException;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +63,7 @@ public class VideoFilePartWriter {
         try {
             if (queue.offer(videoPart, VIDEO_FILE_TRANSFER_TIMEOUT, TimeUnit.SECONDS)) {
                 receivedByteCount += videoPart.length;
+                Log.i(TAG, "addVideoPart: received :   " +receivedByteCount  + " from " + videoFileLength);
             } else {
                 abort();
                 throw new VideoFilePartReceiverException("a limit for waiting free slots at queue expired.");
@@ -104,7 +102,7 @@ public class VideoFilePartWriter {
                     fos.write(videoPart);
                     totalProgress += videoPart.length;
 
-                    updateProgressBar();
+                    updateProgressBar(videoFileLength, totalProgress);
                 }
                 fos.flush();
             } catch (IOException e) {
@@ -133,7 +131,7 @@ public class VideoFilePartWriter {
             EventBus.getDefault().post(new Abort(deviceIndex));
         }
 
-        private void updateProgressBar() {
+        private void updateProgressBar(long videoFileLength, long totalProgress) {
             EventBus.getDefault().post(new Progress(
                     videoFileLength,
                     totalProgress,
