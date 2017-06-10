@@ -82,9 +82,9 @@ public class BluetoothPresenter implements BluetoothContract.Presenter {
 
                 }
             });
+            simpleBluetooth.initializeSimpleBluetooth();
             simpleBluetooth.makeDiscoverable(60000);
         }
-        simpleBluetooth.initializeSimpleBluetooth();
     }
 
     @Override
