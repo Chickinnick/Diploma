@@ -54,7 +54,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
 
 
     @Override
-    public void stopTransfer(long fileLength) {
+    public void stopTransfer (long fileLength) {
         long stopTime = System.currentTimeMillis();
         measurementData.calcSpeed(startTime, stopTime);
         switch (state) {

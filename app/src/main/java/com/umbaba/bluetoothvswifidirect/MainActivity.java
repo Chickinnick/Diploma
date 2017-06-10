@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupComparation();
         initMainFlow();
-//        testFileModel = new FakeFileData(getResources());
-        testFileModel = new DefaultFileData(getResources());
+        testFileModel = new FakeFileData(getResources());
+//        testFileModel = new DefaultFileData(getResources());
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -163,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int distance = 0;
         switch (item.getItemId()) {
+            case R.id.save_one_test_iteration:
+                comparationPresenter.commitChanges();
+                break;
             case R.id.distance_1:
                 distance = 1;
                 break;
