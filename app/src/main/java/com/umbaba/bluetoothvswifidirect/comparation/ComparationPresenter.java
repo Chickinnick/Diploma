@@ -1,6 +1,7 @@
 package com.umbaba.bluetoothvswifidirect.comparation;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationModel;
 import com.umbaba.bluetoothvswifidirect.data.comparation.ComparationRepository;
@@ -16,8 +17,9 @@ import java.util.List;
 
 public class ComparationPresenter implements ComparationContract.Presenter {
 
+    private static final String TAG = "ComparationPresenter";
+
     private static final int MAX_FILES_SENT = 3;
-    private Context context;
     private final ComparationContract.View view;
     private final ComparationModel comparationModel;
     private MeasurementData measurementData;
@@ -28,7 +30,6 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     private int currentDistance;
 
     public ComparationPresenter(Context context, ComparationContract.View view) {
-        this.context = context;
         this.view = view;
         this.comparationModel = new ComparationRepository(context);
         this.view.setPresenter(this);
@@ -39,6 +40,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     @Override
     public void start(int state) {
         this.state = state;
+        Log.d(TAG, "start() called with: state = [" + state + "]"  + (state == 0 ? "bl" : "wifi"));
     }
 
     public void loadCriterion() {
@@ -50,6 +52,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
     public void startTransfer(int size) {
         measurementData = new MeasurementData(size, currentDistance);
         startTime = System.currentTimeMillis();
+        Log.i(TAG, "startTransfer: time: " + startTime);
     }
 
 
@@ -65,6 +68,7 @@ public class ComparationPresenter implements ComparationContract.Presenter {
                 bluetoothMeasurementData.add(measurementData);
                 break;
         }
+        Log.i(TAG, "stopTransfer " + (state == 0 ? "bl" : "wifi") + ": added " + measurementData.toString());
     }
 
     @Override
@@ -73,6 +77,10 @@ public class ComparationPresenter implements ComparationContract.Presenter {
             MeasurementData blMeasdata = bluetoothMeasurementData.get(i);
             MeasurementData wifiMeasdata = wifiMeasurementData.get(i);
             comparationModel.addCriterion(Criteria.prepareFromData(blMeasdata, wifiMeasdata));
+        }
+        Log.i(TAG, "commitChanges: " );
+        for (Criteria criteria : comparationModel.getCriterion()) {
+            Log.i(TAG, "added: " + criteria.toString());
         }
         releaseTempData();
     }

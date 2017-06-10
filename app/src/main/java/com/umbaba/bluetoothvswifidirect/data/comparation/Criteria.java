@@ -82,4 +82,15 @@ public class Criteria implements Parcelable{
     public int getDistance() {
         return distance;
     }
+
+
+    @Override
+    public String toString() {
+        return "Criteria{" +
+                "fileLen=" + fileLen +
+                ", distance=" + distance +
+                ", left='" + left + '\'' +
+                ", right='" + right + '\'' +
+                '}';
+    }
 }
