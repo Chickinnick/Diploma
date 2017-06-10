@@ -6,6 +6,9 @@
             android:id="@+id/group"
             android:checkableBehavior="single">
                 <item
+                    android:id="@+id/save_one_test_iteration"
+                    android:title="Save one iteration" />
+                <item
                     android:id="@+id/distance_1"
                     android:title="1 meter" />
                 <item
